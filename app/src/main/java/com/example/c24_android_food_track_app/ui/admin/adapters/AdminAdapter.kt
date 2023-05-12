@@ -8,5 +8,6 @@ class AdminAdapter(
 ) : ListDelegationAdapter<List<ViewEntity>>(
     nonAuthAdminAdapterDelegate(),
     loadingAdapterDelegate(),
-    orderAdapterDelegate(onOrderReadyCallback)
+    orderAdapterDelegate(onOrderReadyCallback),
+    ordersTitleAdapterDelegate(),
 )

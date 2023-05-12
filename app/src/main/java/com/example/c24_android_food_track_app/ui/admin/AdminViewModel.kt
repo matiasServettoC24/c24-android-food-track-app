@@ -8,6 +8,7 @@ import com.example.c24_android_food_track_app.domain.LoadingViewEntity
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.admin.NonAuthAdminViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
+import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -27,6 +28,7 @@ class AdminViewModel : ViewModel() {
 //            _viewEntities.postValue(listOf(NonAuthAdminViewEntity))
             _viewEntities.postValue(
                 listOf(
+                    OrdersTitleViewEntity,
                     OrderViewEntity("1", "Pizza funghi", false),
                     OrderViewEntity("2", "Pizza funghi", false),
                     OrderViewEntity("3", "Pizza muzzarella", false),

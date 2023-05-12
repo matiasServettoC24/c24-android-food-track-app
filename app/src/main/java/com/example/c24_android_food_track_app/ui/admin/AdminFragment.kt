@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.c24_android_food_track_app.databinding.FragmentNotificationsBinding
 import com.example.c24_android_food_track_app.ui.admin.adapters.AdminAdapter
 import com.google.firebase.firestore.ktx.firestore
