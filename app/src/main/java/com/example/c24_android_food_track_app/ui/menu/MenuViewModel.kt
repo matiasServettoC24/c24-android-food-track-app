@@ -66,7 +66,6 @@ class MenuViewModel : ViewModel() {
                                 )
                             )
                         }
-                        slots.size
                     }
 
                 }
