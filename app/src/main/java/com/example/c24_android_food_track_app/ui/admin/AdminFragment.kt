@@ -56,7 +56,6 @@ class AdminFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
         }
-        viewModel.loadOrders()
     }
 
     override fun onDestroyView() {
