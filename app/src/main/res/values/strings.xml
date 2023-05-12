@@ -5,5 +5,10 @@
     <string name="title_admin">Admin</string>
     <string name="login_email_example_hint">max.mustermann@check24.de</string>
     <string name="login_hint">Email address</string>
+    <string name="order_btn_text">Order</string>
+    <string name="select">Select</string>
+    <string name="error_retry">Retry</string>
+    <string name="asap">ASAP</string>
+    <string name="admin_orders_title">Orders:</string>
     <string name="login_password">Password</string>
 </resources>
