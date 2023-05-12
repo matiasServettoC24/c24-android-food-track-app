@@ -1,4 +1,4 @@
-package com.example.c24_android_food_track_app.ui.dashboard
+package com.example.c24_android_food_track_app.ui.menu
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.c24_android_food_track_app.databinding.FragmentDashboardBinding
 
-class DashboardFragment : Fragment() {
+class MenuFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -22,8 +22,7 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        val dashboardViewModel = ViewModelProvider(this)[MenuViewModel::class.java]
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
