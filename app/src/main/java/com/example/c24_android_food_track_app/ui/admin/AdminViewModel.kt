@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.domain.LoadingViewEntity
 import com.example.c24_android_food_track_app.domain.ViewEntity
+import com.example.c24_android_food_track_app.domain.admin.ErrorViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
 import com.google.firebase.firestore.ktx.firestore
@@ -32,7 +33,7 @@ class AdminViewModel : ViewModel() {
                 .whereEqualTo("status", "ordered")
                 .addSnapshotListener { value, e ->
                     if (e != null) {
-                        Log.w("test_tag_admin_frag", "Listen failed.", e)
+                        _viewEntities.value = listOf(ErrorViewEntity)
                         return@addSnapshotListener
                     }
                     val orders = ArrayList<OrderViewEntity>()
@@ -43,7 +44,6 @@ class AdminViewModel : ViewModel() {
                             orders.add(OrderViewEntity(id, orderTitle, false))
                         }
                     }
-                    Log.d("test_tag_admin_frag", "Current emails in list: $orders")
                     _viewEntities.value = arrayListOf<ViewEntity>()
                         .apply { add(OrdersTitleViewEntity) }
                         .apply { addAll(orders) }

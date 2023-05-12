@@ -10,4 +10,5 @@ class AdminAdapter(
     loadingAdapterDelegate(),
     orderAdapterDelegate(onOrderReadyCallback),
     ordersTitleAdapterDelegate(),
+    errorAdapterDelegate(),
 )
