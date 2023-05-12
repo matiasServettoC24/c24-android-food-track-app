@@ -6,4 +6,5 @@ data class TimeSlotViewEntity(
     val isAvailable: Boolean = true,
     val startTime: String,
     val endTime: String,
+    val remainingSlots: String = Math.random().toString(),
 ): ViewEntity

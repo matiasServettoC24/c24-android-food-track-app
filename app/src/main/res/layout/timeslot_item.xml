@@ -21,9 +21,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/start_time"
-        app:layout_constraintEnd_toStartOf="@id/select_time_slot_btn"
+        app:layout_constraintEnd_toStartOf="@id/remaining_slots"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="12:20" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/remaining_slots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/end_time"
+        app:layout_constraintEnd_toStartOf="@id/select_time_slot_btn"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="5" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/select_time_slot_btn"

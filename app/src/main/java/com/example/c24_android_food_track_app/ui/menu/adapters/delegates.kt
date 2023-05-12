@@ -30,6 +30,7 @@ fun timeSlotDelegate(selectTimeSlotCallback: () -> Unit) = adapterDelegate<TimeS
     bind {
         binding.startTime.text = item.startTime
         binding.endTime.text = item.endTime
+        binding.remainingSlots.text = item.remainingSlots
     }
 
     binding.selectTimeSlotBtn.setOnClickListener { selectTimeSlotCallback() }
