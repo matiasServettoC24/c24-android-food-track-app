@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
+import kotlinx.coroutines.delay
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,5 +72,11 @@ class MenuViewModel : ViewModel() {
                 }
                 _uiState.value = MenuUiState.TimeSelection(slots)
             }
+    }
+
+    suspend fun sendOrder() {
+        _uiState.emit(MenuUiState.WaitingForOrder("Pizza Muzzarella"))
+        delay(10_000)
+        _uiState.emit(MenuUiState.OrderReady("Pizza Muzzarella"))
     }
 }
