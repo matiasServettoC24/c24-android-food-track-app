@@ -1,7 +1,9 @@
 plugins {
     id 'com.google.gms.google-services'
     id 'com.android.application'
+    id 'kotlin-kapt'
     id 'org.jetbrains.kotlin.android'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -37,6 +39,7 @@ android {
 }
 
 dependencies {
+    apply plugin :"kotlin-kapt"
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -59,4 +62,13 @@ dependencies {
 
     // add adapter delegate
     implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.3.2'
+
+    //Dagger hilt
+    def hilt_version="2.44"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    //Firebase auth
+    implementation 'com.google.firebase:firebase-auth:22.0.0'
+
 }

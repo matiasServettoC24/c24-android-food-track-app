@@ -5,4 +5,5 @@
     <string name="title_admin">Admin</string>
     <string name="login_email_example_hint">max.mustermann@check24.de</string>
     <string name="login_hint">Email address</string>
+    <string name="login_password">Password</string>
 </resources>

@@ -9,7 +9,12 @@
         android:id="@+id/navigation_home"
         android:name="com.example.c24_android_food_track_app.ui.login.LoginFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard"
+            app:enterAnim="@anim/from_bottom"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"

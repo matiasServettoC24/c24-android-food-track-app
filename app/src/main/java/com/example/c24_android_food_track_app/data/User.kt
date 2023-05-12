@@ -1,4 +1,7 @@
 package com.example.c24_android_food_track_app.data
 
-class User {
+class User(
+    val email: String
+    ) {
+    constructor() : this("")
 }
