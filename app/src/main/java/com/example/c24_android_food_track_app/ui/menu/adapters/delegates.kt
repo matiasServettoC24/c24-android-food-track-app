@@ -23,7 +23,7 @@ fun menuDelegate(
 }
 
 
-fun timeSlotDelegate(selectTimeSlotCallback: () -> Unit) = adapterDelegate<TimeSlotViewEntity, ViewEntity>(R.layout.menu_item) {
+fun timeSlotDelegate(selectTimeSlotCallback: () -> Unit) = adapterDelegate<TimeSlotViewEntity, ViewEntity>(R.layout.timeslot_item) {
 
     val binding = TimeslotItemBinding.bind(itemView)
 

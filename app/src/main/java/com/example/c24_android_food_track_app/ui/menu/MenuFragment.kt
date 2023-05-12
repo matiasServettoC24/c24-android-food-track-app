@@ -42,10 +42,10 @@ class MenuFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                menuViewModel.uiState.collectLatest(::onUiStateUpdated)
-            }
             menuViewModel.loadDishes()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch { menuViewModel.uiState.collectLatest(::onUiStateUpdated) }
+            }
         }
 
         return binding.root
@@ -66,6 +66,7 @@ class MenuFragment : Fragment() {
 
         binding.recyclerView.isVisible = true
         adapter.items = uiState.timeList
+        adapter.notifyDataSetChanged()
     }
 
     private fun showLoading() {
@@ -88,7 +89,7 @@ class MenuFragment : Fragment() {
 
         binding.recyclerView.isVisible = true
         adapter.items = uiState.dishList
-
+        adapter.notifyDataSetChanged()
     }
 
     private fun orderCallback() {
