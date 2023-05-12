@@ -3,16 +3,13 @@ package com.example.c24_android_food_track_app.ui.menu
 import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 class MenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<MenuUiState>(MenuUiState.Loading)
@@ -35,45 +32,44 @@ class MenuViewModel : ViewModel() {
         )
     }
 
-    suspend fun loadTimeSlots() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val slots = ArrayList<TimeSlotViewEntity>()
-            db.collection("Slots")
-                .addSnapshotListener { value, e ->
-                    if (e != null) {
-                        Log.w(ContentValues.TAG, "Listen failed.", e)
-                        return@addSnapshotListener
-                    }
-
-                    for (doc in value!!) {
-                        val slotId = doc.getString("slot_id")
-                        val timeStart = doc.getString("time_start")
-                        val timeEnd = doc.getString("time_end")
-                        val remainingOrders = doc.getString("remaining_orders")
-
-                        if (slotId != null
-                            && timeStart != null
-                            && timeEnd != null
-                            && remainingOrders != null
-
-                        ) {
-                            if (remainingOrders.toInt() > 0) {
-                                // add to list the
-
-                                slots.add(
-                                    TimeSlotViewEntity(
-                                        slotId = slotId,
-                                        timeStart = timeStart,
-                                        timeEnd = timeEnd,
-                                        remainingOrders = remainingOrders,
-                                    )
-                                )
-                            }
-                        }
-
-                    }
+    fun loadTimeSlots() {
+        db.collection("Slots")
+            .addSnapshotListener { value, e ->
+                val slots = ArrayList<TimeSlotViewEntity>()
+                if (e != null) {
+                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    return@addSnapshotListener
                 }
-            _uiState.emit(MenuUiState.TimeSelection(slots))
-        }
+
+                for (doc in value!!) {
+                    val slotId = doc.getString("slot_id")
+                    val timeStart = doc.getString("time_start")
+                    val timeEnd = doc.getString("time_end")
+                    val remainingOrders = doc.getString("remaining_orders")
+
+                    if (slotId != null
+                        && timeStart != null
+                        && timeEnd != null
+                        && remainingOrders != null
+
+                    ) {
+                        if (remainingOrders.toInt() > 0) {
+                            // add to list the
+
+                            slots.add(
+                                TimeSlotViewEntity(
+                                    slotId = slotId,
+                                    timeStart = timeStart,
+                                    timeEnd = timeEnd,
+                                    remainingOrders = remainingOrders,
+                                )
+                            )
+                        }
+                        slots.size
+                    }
+
+                }
+                _uiState.value = MenuUiState.TimeSelection(slots)
+            }
     }
 }
