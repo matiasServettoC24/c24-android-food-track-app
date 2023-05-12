@@ -13,4 +13,5 @@ class MenuAdapter(
     waitingForOrderAdapterDelegate(),
     orderReadyAdapterDelegate(),
     asapBtnAdapterDelegate(asapBtnCallback),
+    menuTitleAdapterDelegate(),
 )

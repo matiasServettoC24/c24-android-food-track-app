@@ -101,12 +101,7 @@ class MenuFragment : Fragment() {
     }
 
     private fun showDishes(uiState: MenuUiState.DishSelection) {
-        binding.loading.root.isVisible = false
-        binding.error.root.isVisible = false
-
-        binding.recyclerView.isVisible = true
-        adapter.items = uiState.dishList
-        adapter.notifyDataSetChanged()
+        showViewEntities(uiState.dishList)
     }
 
     private fun orderCallback() {

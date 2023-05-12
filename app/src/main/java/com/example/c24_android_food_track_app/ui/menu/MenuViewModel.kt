@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.AsapBtnViewEntity
+import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
@@ -24,6 +25,7 @@ class MenuViewModel : ViewModel() {
         _uiState.emit(
             MenuUiState.DishSelection(
                 listOf(
+                    MenuTitleViewEntity,
                     MenuViewEntity(dishTitle = "Pizza1", dishType = DishType.NON_VEGETARIAN.name),
                     MenuViewEntity(dishTitle = "Pizza2", dishType = DishType.VEGETARIAN.name),
                     MenuViewEntity(dishTitle = "Pizza3", dishType = DishType.NON_VEGETARIAN.name),

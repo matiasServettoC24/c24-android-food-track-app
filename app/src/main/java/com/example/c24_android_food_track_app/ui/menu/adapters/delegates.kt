@@ -1,5 +1,6 @@
 package com.example.c24_android_food_track_app.ui.menu.adapters
 
+import android.widget.TextView
 import com.example.c24_android_food_track_app.R
 import com.example.c24_android_food_track_app.databinding.AsapTimeslotItemBinding
 import com.example.c24_android_food_track_app.databinding.MenuItemBinding
@@ -7,7 +8,12 @@ import com.example.c24_android_food_track_app.databinding.MenuOrderReadyItemBind
 import com.example.c24_android_food_track_app.databinding.MenuWaitingForOrderItemBinding
 import com.example.c24_android_food_track_app.databinding.TimeslotItemBinding
 import com.example.c24_android_food_track_app.domain.ViewEntity
-import com.example.c24_android_food_track_app.domain.menu.*
+import com.example.c24_android_food_track_app.domain.menu.AsapBtnViewEntity
+import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
+import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
+import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
+import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
+import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 
 fun menuDelegate(
@@ -60,3 +66,8 @@ fun asapBtnAdapterDelegate(asapBtnCallback: () -> Unit) = adapterDelegate<AsapBt
     binding.asapBtn.setOnClickListener { asapBtnCallback() }
 
 }
+
+fun menuTitleAdapterDelegate() =
+    adapterDelegate<MenuTitleViewEntity, ViewEntity>(R.layout.admin_title_item) {
+        itemView.findViewById<TextView>(R.id.title).text = "Menu:"
+    }
