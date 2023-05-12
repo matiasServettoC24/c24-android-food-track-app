@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -40,6 +39,7 @@ class MenuFragment : Fragment() {
         _adapter = MenuAdapter(
             orderCallback = ::orderCallback,
             selectTimeSlotCallback = ::selectTimeCallback,
+            asapBtnCallback = ::selectTimeCallback,
         )
 
         binding.recyclerView.adapter = adapter
@@ -81,7 +81,6 @@ class MenuFragment : Fragment() {
         binding.loading.root.isVisible = false
         binding.error.root.isVisible = false
 
-        binding.asapBtn.isVisible = true
         binding.recyclerView.isVisible = true
         adapter.items = viewEntities
         adapter.notifyDataSetChanged()
@@ -90,7 +89,6 @@ class MenuFragment : Fragment() {
     private fun showLoading() {
         binding.recyclerView.isVisible = false
         binding.error.root.isVisible = false
-        binding.asapBtn.isVisible = false
 
         binding.loading.root.isVisible = true
     }
@@ -98,7 +96,6 @@ class MenuFragment : Fragment() {
     private fun showError() {
         binding.recyclerView.isVisible = false
         binding.loading.root.isVisible = false
-        binding.asapBtn.isVisible = false
 
         binding.error.root.isVisible = true
     }
@@ -106,7 +103,6 @@ class MenuFragment : Fragment() {
     private fun showDishes(uiState: MenuUiState.DishSelection) {
         binding.loading.root.isVisible = false
         binding.error.root.isVisible = false
-        binding.asapBtn.isVisible = false
 
         binding.recyclerView.isVisible = true
         adapter.items = uiState.dishList
