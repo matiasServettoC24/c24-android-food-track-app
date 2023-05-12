@@ -1,6 +1,7 @@
 package com.example.c24_android_food_track_app.ui.menu.adapters
 
 import com.example.c24_android_food_track_app.R
+import com.example.c24_android_food_track_app.databinding.AsapTimeslotItemBinding
 import com.example.c24_android_food_track_app.databinding.MenuItemBinding
 import com.example.c24_android_food_track_app.databinding.MenuOrderReadyItemBinding
 import com.example.c24_android_food_track_app.databinding.MenuWaitingForOrderItemBinding
@@ -54,6 +55,8 @@ fun orderReadyAdapterDelegate() = adapterDelegate<OrderReadyViewEntity, ViewEnti
     }
 }
 
-fun asapBtnAdapterDelegate() = adapterDelegate<AsapBtnViewEntity, ViewEntity>(R.layout.asap_timeslot_item) {
+fun asapBtnAdapterDelegate(asapBtnCallback: () -> Unit) = adapterDelegate<AsapBtnViewEntity, ViewEntity>(R.layout.asap_timeslot_item) {
+    val binding = AsapTimeslotItemBinding.bind(itemView)
+    binding.asapBtn.setOnClickListener { asapBtnCallback() }
 
 }
