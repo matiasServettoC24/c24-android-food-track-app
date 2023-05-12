@@ -11,9 +11,12 @@ import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.admin.ErrorViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
+import com.example.c24_android_food_track_app.ui.menu.MenuUiState
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AdminViewModel : ViewModel() {
@@ -21,11 +24,8 @@ class AdminViewModel : ViewModel() {
     private val db = Firebase.firestore
     private val collection get() = db.collection("Users")
 
-    private val _viewEntities = MutableLiveData<List<ViewEntity>>().apply {
-        value = listOf(LoadingViewEntity)
-    }
-
-    val viewEntities: LiveData<List<ViewEntity>> = _viewEntities
+    private val _viewEntities = MutableStateFlow<List<ViewEntity>>(listOf(LoadingViewEntity))
+    val viewEntities: StateFlow<List<ViewEntity>> = _viewEntities
 
     fun loadOrders() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -71,13 +71,13 @@ class AdminViewModel : ViewModel() {
     }
 
     fun onOrderReady(orderViewEntity: OrderViewEntity) {
-        _viewEntities.postValue(_viewEntities.value!!.map {
+        _viewEntities.value = _viewEntities.value.map {
             if (it == orderViewEntity) {
                 orderViewEntity.copy(isReady = true)
             } else {
                 it
             }
-        })
+        }
         viewModelScope.launch(Dispatchers.IO) {
             collection
                 .document("user" + orderViewEntity.id)
