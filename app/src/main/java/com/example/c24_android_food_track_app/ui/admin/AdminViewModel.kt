@@ -43,13 +43,14 @@ class AdminViewModel : ViewModel() {
 
     fun onOrderReady(orderId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _viewEntities.value = _viewEntities.value!!.map {
-                if (it is OrderViewEntity && it.id == orderId) {
+            delay(300)
+            _viewEntities.postValue(_viewEntities.value!!.map {
+                if (it is OrderViewEntity && it.id.equals(orderId, ignoreCase = true)) {
                     it.copy(isReady = true)
                 } else {
                     it
                 }
-            }
+            })
         }
     }
 }
