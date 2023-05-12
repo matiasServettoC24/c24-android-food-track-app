@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -38,5 +39,11 @@ class MenuViewModel : ViewModel() {
                 )
             )
         )
+    }
+
+    suspend fun sendOrder() {
+        _uiState.emit(MenuUiState.WaitingForOrder("Pizza Muzzarella"))
+        delay(10_000)
+        _uiState.emit(MenuUiState.OrderReady("Pizza Muzzarella"))
     }
 }

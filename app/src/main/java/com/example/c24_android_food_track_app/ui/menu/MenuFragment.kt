@@ -12,6 +12,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.c24_android_food_track_app.databinding.FragmentMenuBinding
+import com.example.c24_android_food_track_app.domain.ViewEntity
+import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
+import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.adapters.MenuAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -57,15 +60,29 @@ class MenuFragment : Fragment() {
             MenuUiState.Error -> showError()
             MenuUiState.Loading -> showLoading()
             is MenuUiState.TimeSelection -> showTimeSlots(uiState)
+            is MenuUiState.OrderReady -> showOrderReady(uiState)
+            is MenuUiState.WaitingForOrder -> showWaitingForOrder(uiState)
         }
     }
 
+    private fun showOrderReady(uiState: MenuUiState.OrderReady) {
+        showViewEntities(listOf(OrderReadyViewEntity(uiState.orderTitle)))
+    }
+
+    private fun showWaitingForOrder(uiState: MenuUiState.WaitingForOrder) {
+        showViewEntities(listOf(WaitingForOrderViewEntity(uiState.orderTitle)))
+    }
+
     private fun showTimeSlots(uiState: MenuUiState.TimeSelection) {
+        showViewEntities(uiState.timeList)
+    }
+
+    private fun showViewEntities(viewEntities: List<ViewEntity>) {
         binding.loading.root.isVisible = false
         binding.error.root.isVisible = false
 
         binding.recyclerView.isVisible = true
-        adapter.items = uiState.timeList
+        adapter.items = viewEntities
         adapter.notifyDataSetChanged()
     }
 
@@ -100,8 +117,7 @@ class MenuFragment : Fragment() {
 
     private fun selectTimeCallback() {
         viewLifecycleOwner.lifecycleScope.launch {
-//            showResultScreen()
-            Toast.makeText(context, "selectTimeCallback clicked", Toast.LENGTH_SHORT).show()
+            menuViewModel.sendOrder()
         }
     }
 
