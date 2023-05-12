@@ -1,6 +1,6 @@
 package com.example.c24_android_food_track_app.data.repositories
 
-import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
+import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 class OrdersRepository {
 
-    private val _orders = MutableStateFlow<List<OrderViewEntity>>(listOf())
-    val orders: StateFlow<List<OrderViewEntity>> = _orders
+    private val _orders = MutableStateFlow<List<FoodTrackOrder>>(listOf())
+    val orders: StateFlow<List<FoodTrackOrder>> = _orders
 
     private val db = Firebase.firestore
     private val collection get() = db.collection("Users")
@@ -22,7 +22,7 @@ class OrdersRepository {
                     _orders.value = listOf()
                     return@addSnapshotListener
                 }
-                val orders = arrayListOf<OrderViewEntity>()
+                val orders = arrayListOf<FoodTrackOrder>()
                 for (doc in value!!) {
                     val id = doc.getString("user_id")
                     val orderTitle = doc.getString("food_order")
@@ -39,7 +39,7 @@ class OrdersRepository {
                         && email != null
                     ) {
                         orders.add(
-                            OrderViewEntity(
+                            FoodTrackOrder(
                                 id, orderTitle, false,
                                 status = status,
                                 email = email,
@@ -52,7 +52,7 @@ class OrdersRepository {
             }
     }
 
-    fun onOrderReady(orderViewEntity: OrderViewEntity) {
+    fun onOrderReady(orderViewEntity: FoodTrackOrder) {
         collection
             .document("user" + orderViewEntity.id)
             .update(

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:text="Orders:"
-    android:textSize="22sp"
+    android:layout_marginTop="@dimen/title_margin_top"
+    android:text="@string/admin_orders_title"
+    android:textSize="@dimen/title"
     android:textStyle="bold" />

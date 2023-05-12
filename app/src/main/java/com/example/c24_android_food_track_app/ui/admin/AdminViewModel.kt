@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.data.repositories.OrdersRepository
 import com.example.c24_android_food_track_app.domain.LoadingViewEntity
 import com.example.c24_android_food_track_app.domain.ViewEntity
-import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
+import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +34,7 @@ class AdminViewModel : ViewModel() {
         }
     }
 
-    fun onOrderReady(orderViewEntity: OrderViewEntity) {
+    fun onOrderReady(orderViewEntity: FoodTrackOrder) {
         _viewEntities.value = _viewEntities.value.map {
             if (it == orderViewEntity) {
                 orderViewEntity.copy(isReady = true)

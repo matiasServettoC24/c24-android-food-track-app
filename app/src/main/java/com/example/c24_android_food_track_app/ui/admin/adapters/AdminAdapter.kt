@@ -1,11 +1,11 @@
 package com.example.c24_android_food_track_app.ui.admin.adapters
 
 import com.example.c24_android_food_track_app.domain.ViewEntity
-import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
+import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 class AdminAdapter(
-    onOrderReadyCallback: (OrderViewEntity) -> Unit
+    onOrderReadyCallback: (FoodTrackOrder) -> Unit
 ) : ListDelegationAdapter<List<ViewEntity>>(
     nonAuthAdminAdapterDelegate(),
     loadingAdapterDelegate(),
