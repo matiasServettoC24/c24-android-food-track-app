@@ -1,6 +1,9 @@
 package com.example.c24_android_food_track_app.ui.admin
 
+import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +12,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.c24_android_food_track_app.databinding.FragmentNotificationsBinding
 import com.example.c24_android_food_track_app.ui.admin.adapters.AdminAdapter
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class AdminFragment : Fragment() {
@@ -22,6 +28,8 @@ class AdminFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private val adapter get() = _adapter!!
+
+    private val db = Firebase.firestore
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +58,27 @@ class AdminFragment : Fragment() {
 
         return root
     }
+
+    private fun getOrders() {
+        db.collection("Users")
+            .whereEqualTo("status", "ordered")
+            .addSnapshotListener { value, e ->
+                if (e != null) {
+                    Log.w("test_tag_admin_frag", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                val emails = ArrayList<String>()
+                for (doc in value!!) {
+                    doc.getString("email")?.let {
+                        emails.add(it)
+                    }
+                }
+                Log.d("test_tag_admin_frag", "Current emails in list: $emails")
+            }
+    }
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

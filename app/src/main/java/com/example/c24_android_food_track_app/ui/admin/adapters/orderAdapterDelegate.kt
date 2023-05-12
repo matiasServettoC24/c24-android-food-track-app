@@ -14,12 +14,13 @@ fun orderAdapterDelegate(
 
     bind {
         binding.orderTitle.text = item.title
-        binding.orderReadyButton.isEnabled = item.isReady.not()
-        if (item.isReady) {
+        if (item.isReady.not()) {
+            binding.orderReadyButton.isEnabled = true
             binding.orderReadyButton.setOnClickListener {
                 onOrderReadyCallback(item.id)
             }
         } else {
+            binding.orderReadyButton.isEnabled = false
             binding.orderReadyButton.setOnClickListener(null)
         }
     }
