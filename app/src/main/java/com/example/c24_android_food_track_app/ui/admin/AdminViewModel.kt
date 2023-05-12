@@ -1,4 +1,4 @@
-package com.example.c24_android_food_track_app.ui.notifications
+package com.example.c24_android_food_track_app.ui.admin
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
