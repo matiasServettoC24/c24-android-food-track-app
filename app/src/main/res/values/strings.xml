@@ -3,6 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_menu">Menu</string>
     <string name="title_notifications">Notifications</string>
+    <string name="login_email_example_hint">max.mustermann@check24.de</string>
+    <string name="login_hint">Email address</string>
     <string name="order_btn_text">Order</string>
     <string name="select">Select</string>
 </resources>

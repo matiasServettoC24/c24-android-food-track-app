@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.c24_android_food_track_app.databinding.FragmentNotificationsBinding
 import com.example.c24_android_food_track_app.ui.admin.adapters.AdminAdapter
+import kotlinx.coroutines.launch
 
 class AdminFragment : Fragment() {
 
@@ -24,17 +28,24 @@ class AdminFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
+        val viewModel =
             ViewModelProvider(this).get(AdminViewModel::class.java)
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        _adapter = AdminAdapter()
+        _adapter = AdminAdapter(viewModel::onOrderReady)
         binding.recyclerView.adapter = adapter
 
-        notificationsViewModel.viewEntities.observe(viewLifecycleOwner) {
+        viewModel.viewEntities.observe(viewLifecycleOwner) {
             adapter.items = it
+            adapter.notifyDataSetChanged()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.loadOrders()
+            }
         }
 
         return root
