@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1003444111585",
+    "project_id": "firetruck-7fd8f",
+    "storage_bucket": "firetruck-7fd8f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003444111585:android:241282c0961b6d6ae50fa0",
+        "android_client_info": {
+          "package_name": "com.example.c24_android_food_track_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003444111585-6igggv8f9up51dei97dh5mt651o57hea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGKAwM_HPkrWcw8nnUERIRsxVRM7kxdMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003444111585-6igggv8f9up51dei97dh5mt651o57hea.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
