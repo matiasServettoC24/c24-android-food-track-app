@@ -4,17 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.c24_android_food_track_app.databinding.FragmentMenuBinding
+import com.example.c24_android_food_track_app.ui.menu.adapters.MenuAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MenuFragment : Fragment() {
 
     private var _binding: FragmentMenuBinding? = null
+    private var _adapter: MenuAdapter? = null
 
     private val binding get() = _binding!!
+    private val adapter get() = _adapter!!
 
-    val dashboardViewModel by viewModels<MenuViewModel>()
+    private val menuViewModel by viewModels<MenuViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,7 +33,59 @@ class MenuFragment : Fragment() {
 
         _binding = FragmentMenuBinding.inflate(inflater, container, false)
 
+        _adapter = MenuAdapter(
+            orderCallback = ::orderCallback,
+            selectTimeSlotCallback = ::selectTimeCallback,
+        )
+
+        binding.recyclerView.adapter = adapter
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                menuViewModel.uiState.collectLatest(::onUiStateUpdated)
+            }
+            menuViewModel.loadDishes()
+        }
+
         return binding.root
+    }
+
+    private fun onUiStateUpdated(uiState: MenuUiState) {
+        when (uiState) {
+            is MenuUiState.DishSelection -> showDishes(uiState)
+            MenuUiState.Error -> showError()
+            MenuUiState.Loading -> showLoading()
+            is MenuUiState.TimeSelection -> showTimeSlots(uiState)
+        }
+    }
+
+    private fun showTimeSlots(uiState: MenuUiState.TimeSelection) {
+        adapter.items = uiState.timeList
+    }
+
+    private fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    private fun showError() {
+        TODO("Not yet implemented")
+    }
+
+    private fun showDishes(uiState: MenuUiState.DishSelection) {
+        adapter.items = uiState.dishList
+    }
+
+    private fun orderCallback() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            menuViewModel.loadTimeSlots()
+        }
+    }
+
+    private fun selectTimeCallback() {
+        viewLifecycleOwner.lifecycleScope.launch {
+//            showResultScreen()
+            Toast.makeText(context, "selectTimeCallback clicked", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {
