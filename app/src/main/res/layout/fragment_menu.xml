@@ -14,4 +14,15 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/menu_item" />
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/menu_full_screen_loading"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/error"
+        layout="@layout/menu_full_screen_error"
+        android:visibility="gone"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

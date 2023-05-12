@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -60,19 +61,34 @@ class MenuFragment : Fragment() {
     }
 
     private fun showTimeSlots(uiState: MenuUiState.TimeSelection) {
+        binding.loading.root.isVisible = false
+        binding.error.root.isVisible = false
+
+        binding.recyclerView.isVisible = true
         adapter.items = uiState.timeList
     }
 
     private fun showLoading() {
-        TODO("Not yet implemented")
+        binding.recyclerView.isVisible = false
+        binding.error.root.isVisible = false
+
+        binding.loading.root.isVisible = true
     }
 
     private fun showError() {
-        TODO("Not yet implemented")
+        binding.recyclerView.isVisible = false
+        binding.loading.root.isVisible = false
+
+        binding.error.root.isVisible = true
     }
 
     private fun showDishes(uiState: MenuUiState.DishSelection) {
+        binding.loading.root.isVisible = false
+        binding.error.root.isVisible = false
+
+        binding.recyclerView.isVisible = true
         adapter.items = uiState.dishList
+
     }
 
     private fun orderCallback() {
