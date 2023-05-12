@@ -81,6 +81,7 @@ class MenuFragment : Fragment() {
         binding.loading.root.isVisible = false
         binding.error.root.isVisible = false
 
+        binding.asapBtn.isVisible = true
         binding.recyclerView.isVisible = true
         adapter.items = viewEntities
         adapter.notifyDataSetChanged()
@@ -89,6 +90,7 @@ class MenuFragment : Fragment() {
     private fun showLoading() {
         binding.recyclerView.isVisible = false
         binding.error.root.isVisible = false
+        binding.asapBtn.isVisible = false
 
         binding.loading.root.isVisible = true
     }
@@ -96,6 +98,7 @@ class MenuFragment : Fragment() {
     private fun showError() {
         binding.recyclerView.isVisible = false
         binding.loading.root.isVisible = false
+        binding.asapBtn.isVisible = false
 
         binding.error.root.isVisible = true
     }
@@ -103,6 +106,7 @@ class MenuFragment : Fragment() {
     private fun showDishes(uiState: MenuUiState.DishSelection) {
         binding.loading.root.isVisible = false
         binding.error.root.isVisible = false
+        binding.asapBtn.isVisible = false
 
         binding.recyclerView.isVisible = true
         adapter.items = uiState.dishList

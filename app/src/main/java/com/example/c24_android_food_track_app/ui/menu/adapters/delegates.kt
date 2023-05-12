@@ -31,8 +31,9 @@ fun timeSlotDelegate(selectTimeSlotCallback: () -> Unit) = adapterDelegate<TimeS
     val binding = TimeslotItemBinding.bind(itemView)
 
     bind {
-        binding.startTime.text = item.startTime
-        binding.endTime.text = item.endTime
+        binding.startTime.text = item.timeStart
+        binding.endTime.text = item.timeEnd
+        binding.remainingSlots.text = item.remainingOrders
     }
 
     binding.selectTimeSlotBtn.setOnClickListener { selectTimeSlotCallback() }
