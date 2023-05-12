@@ -6,10 +6,7 @@ import com.example.c24_android_food_track_app.databinding.MenuOrderReadyItemBind
 import com.example.c24_android_food_track_app.databinding.MenuWaitingForOrderItemBinding
 import com.example.c24_android_food_track_app.databinding.TimeslotItemBinding
 import com.example.c24_android_food_track_app.domain.ViewEntity
-import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
-import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
-import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
-import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
+import com.example.c24_android_food_track_app.domain.menu.*
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 
 fun menuDelegate(
@@ -55,4 +52,8 @@ fun orderReadyAdapterDelegate() = adapterDelegate<OrderReadyViewEntity, ViewEnti
     bind {
         binding.order.text = item.orderTitle
     }
+}
+
+fun asapBtnAdapterDelegate() = adapterDelegate<AsapBtnViewEntity, ViewEntity>(R.layout.asap_timeslot_item) {
+
 }

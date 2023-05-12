@@ -12,4 +12,5 @@ class MenuAdapter(
     timeSlotDelegate(selectTimeSlotCallback),
     waitingForOrderAdapterDelegate(),
     orderReadyAdapterDelegate(),
+    asapBtnAdapterDelegate(),
 )
