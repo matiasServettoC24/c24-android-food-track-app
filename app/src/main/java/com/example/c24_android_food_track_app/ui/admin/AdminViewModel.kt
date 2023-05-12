@@ -1,20 +1,24 @@
 package com.example.c24_android_food_track_app.ui.admin
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.domain.LoadingViewEntity
 import com.example.c24_android_food_track_app.domain.ViewEntity
-import com.example.c24_android_food_track_app.domain.admin.NonAuthAdminViewEntity
+import com.example.c24_android_food_track_app.domain.admin.ErrorViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
-import kotlinx.coroutines.CoroutineScope
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AdminViewModel : ViewModel() {
+
+    private val db = Firebase.firestore
 
     private val _viewEntities = MutableLiveData<List<ViewEntity>>().apply {
         value = listOf(LoadingViewEntity)
@@ -24,22 +28,26 @@ class AdminViewModel : ViewModel() {
 
     fun loadOrders() {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(1_000)
-//            _viewEntities.postValue(listOf(NonAuthAdminViewEntity))
-            _viewEntities.postValue(
-                listOf(
-                    OrdersTitleViewEntity,
-                    OrderViewEntity("1", "Pizza funghi", false),
-                    OrderViewEntity("2", "Pizza funghi", false),
-                    OrderViewEntity("3", "Pizza muzzarella", false),
-                    OrderViewEntity("4", "Pizza pepperoni", false),
-                    OrderViewEntity("5", "Pizza muzzarella", false),
-                    OrderViewEntity("6", "Pizza muzzarella", false),
-                    OrderViewEntity("7", "Pizza muzzarella", false),
-                    OrderViewEntity("8", "Pizza veggie", false),
-                    OrderViewEntity("9", "Pizza pepperoni", false),
-                )
-            )
+
+            db.collection("Users")
+                .whereEqualTo("status", "ordered")
+                .addSnapshotListener { value, e ->
+                    if (e != null) {
+                        _viewEntities.value = listOf(ErrorViewEntity)
+                        return@addSnapshotListener
+                    }
+                    val orders = ArrayList<OrderViewEntity>()
+                    for (doc in value!!) {
+                        val id = doc.getString("user_id")
+                        val orderTitle = doc.getString("food_order")
+                        if (id != null && orderTitle != null) {
+                            orders.add(OrderViewEntity(id, orderTitle, false))
+                        }
+                    }
+                    _viewEntities.value = arrayListOf<ViewEntity>()
+                        .apply { add(OrdersTitleViewEntity) }
+                        .apply { addAll(orders) }
+                }
         }
     }
 
