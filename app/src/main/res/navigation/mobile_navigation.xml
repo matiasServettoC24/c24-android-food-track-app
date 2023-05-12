@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.c24_android_food_track_app.ui.home.HomeFragment"
+        android:name="com.example.c24_android_food_track_app.ui.login.LoginFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_login" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.c24_android_food_track_app.ui.admin.AdminFragment"
+        android:name="com.example.c24_android_food_track_app.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
