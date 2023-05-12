@@ -3,13 +3,16 @@ package com.example.c24_android_food_track_app.ui.menu
 import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class MenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<MenuUiState>(MenuUiState.Loading)
@@ -33,61 +36,44 @@ class MenuViewModel : ViewModel() {
     }
 
     suspend fun loadTimeSlots() {
-        _uiState.emit(
-            MenuUiState.TimeSelection(
-                listOf(
-                    TimeSlotViewEntity(startTime = "12:00", endTime = "12:10"),
-                    TimeSlotViewEntity(startTime = "12:10", endTime = "12:20"),
-                    TimeSlotViewEntity(startTime = "12:30", endTime = "12:40"),
-                    TimeSlotViewEntity(startTime = "12:40", endTime = "12:50"),
-                    TimeSlotViewEntity(startTime = "12:50", endTime = "12:60")
-                )
-            )
-        )
-    }
+        viewModelScope.launch(Dispatchers.IO) {
+            val slots = ArrayList<TimeSlotViewEntity>()
+            db.collection("Slots")
+                .addSnapshotListener { value, e ->
+                    if (e != null) {
+                        Log.w(ContentValues.TAG, "Listen failed.", e)
+                        return@addSnapshotListener
+                    }
 
-    fun getSlots() {
+                    for (doc in value!!) {
+                        val slotId = doc.getString("slot_id")
+                        val timeStart = doc.getString("time_start")
+                        val timeEnd = doc.getString("time_end")
+                        val remainingOrders = doc.getString("remaining_orders")
 
-        db.collection("Slots")
-            .addSnapshotListener { value, e ->
-                if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
-                    return@addSnapshotListener
-                }
-                val slots = ArrayList<Slots>()
-                for (doc in value!!) {
-                    val slotId = doc.getString("slot_id")
-                    val timeStart = doc.getString("time_start")
-                    val timeEnd = doc.getString("time_end")
-                    val remainingOrders = doc.getString("remaining_orders")
+                        if (slotId != null
+                            && timeStart != null
+                            && timeEnd != null
+                            && remainingOrders != null
 
-                    if (slotId != null
-                        && timeStart != null
-                        && timeEnd != null
-                        && remainingOrders != null
+                        ) {
+                            if (remainingOrders.toInt() > 0) {
+                                // add to list the
 
-                    ) {
-                        if (remainingOrders.toInt() > 0) {
-                            // add to list the
-
-                            slots.add(
-                                Slots(
-                                    slotId = slotId,
-                                    timeStart = timeStart,
-                                    timeEnd = timeEnd,
-                                    remainingOrders = remainingOrders,
+                                slots.add(
+                                    TimeSlotViewEntity(
+                                        slotId = slotId,
+                                        timeStart = timeStart,
+                                        timeEnd = timeEnd,
+                                        remainingOrders = remainingOrders,
+                                    )
                                 )
-                            )
+                            }
                         }
+
                     }
                 }
-            }
+            _uiState.emit(MenuUiState.TimeSelection(slots))
+        }
     }
 }
-
-data class Slots(
-    val slotId: String,
-    val timeStart: String,
-    val timeEnd: String,
-    val remainingOrders: String,
-)

@@ -3,8 +3,9 @@ package com.example.c24_android_food_track_app.domain.menu
 import com.example.c24_android_food_track_app.domain.ViewEntity
 
 data class TimeSlotViewEntity(
-    val isAvailable: Boolean = true,
-    val startTime: String,
-    val endTime: String,
-    val remainingSlots: String = Math.random().toString(),
+    val timeStart: String,
+    val timeEnd: String,
+    val remainingOrders: String = "5",
+
+    val slotId: String,
 ): ViewEntity
