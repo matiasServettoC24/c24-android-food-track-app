@@ -40,8 +40,23 @@ class AdminViewModel : ViewModel() {
                     for (doc in value!!) {
                         val id = doc.getString("user_id")
                         val orderTitle = doc.getString("food_order")
-                        if (id != null && orderTitle != null) {
-                            orders.add(OrderViewEntity(id, orderTitle, false))
+
+
+                        val email = doc.getString("email")
+                        val slot = doc.getString("slot")
+                        val status = doc.getString("status")
+
+                        if (id != null
+                            && orderTitle != null
+                            && status != null
+                            && slot != null
+                            && email != null
+                        ) {
+                            orders.add(OrderViewEntity(id, orderTitle, false,
+                                status = status,
+                                email = email,
+                                slot = slot
+                            ))
                         }
                     }
                     _viewEntities.value = arrayListOf<ViewEntity>()
@@ -62,5 +77,17 @@ class AdminViewModel : ViewModel() {
                 }
             })
         }
+    }
+
+    fun submitOrder(orderViewEntity: OrderViewEntity) {
+        db.collection("users")
+            .document("user" + orderViewEntity.id)
+            .update(mapOf(
+                "email" to orderViewEntity.email,
+                "food_order" to orderViewEntity.title,
+                "slot" to orderViewEntity.slot,
+                "user_id" to orderViewEntity.id,
+                "status" to "Ready"
+            ))
     }
 }
