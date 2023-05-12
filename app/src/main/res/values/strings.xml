@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">c24-android-food-track-app</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_menu">Menu</string>
     <string name="title_admin">Admin</string>
     <string name="login_email_example_hint">max.mustermann@check24.de</string>
     <string name="login_hint">Email address</string>
