@@ -7,7 +7,7 @@ import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 
 fun orderAdapterDelegate(
-    onOrderReadyCallback: (id: String) -> Unit
+    onOrderReadyCallback: (OrderViewEntity) -> Unit
 ) = adapterDelegate<OrderViewEntity, ViewEntity>(R.layout.admin_order_item) {
 
     val binding = AdminOrderItemBinding.bind(itemView)
@@ -17,7 +17,7 @@ fun orderAdapterDelegate(
         if (item.isReady.not()) {
             binding.orderReadyButton.isEnabled = true
             binding.orderReadyButton.setOnClickListener {
-                onOrderReadyCallback(item.id)
+                onOrderReadyCallback(item)
             }
         } else {
             binding.orderReadyButton.isEnabled = false

@@ -1,6 +1,5 @@
 package com.example.c24_android_food_track_app.ui.admin
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,12 +12,12 @@ import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AdminViewModel : ViewModel() {
 
     private val db = Firebase.firestore
+    private val collection get() = db.collection("Users")
 
     private val _viewEntities = MutableLiveData<List<ViewEntity>>().apply {
         value = listOf(LoadingViewEntity)
@@ -29,7 +28,7 @@ class AdminViewModel : ViewModel() {
     fun loadOrders() {
         viewModelScope.launch(Dispatchers.IO) {
 
-            db.collection("Users")
+            collection
                 .whereEqualTo("status", "ordered")
                 .addSnapshotListener { value, e ->
                     if (e != null) {
@@ -52,11 +51,14 @@ class AdminViewModel : ViewModel() {
                             && slot != null
                             && email != null
                         ) {
-                            orders.add(OrderViewEntity(id, orderTitle, false,
-                                status = status,
-                                email = email,
-                                slot = slot
-                            ))
+                            orders.add(
+                                OrderViewEntity(
+                                    id, orderTitle, false,
+                                    status = status,
+                                    email = email,
+                                    slot = slot
+                                )
+                            )
                         }
                     }
                     _viewEntities.value = arrayListOf<ViewEntity>()
@@ -66,28 +68,26 @@ class AdminViewModel : ViewModel() {
         }
     }
 
-    fun onOrderReady(orderId: String) {
+    fun onOrderReady(orderViewEntity: OrderViewEntity) {
+        _viewEntities.postValue(_viewEntities.value!!.map {
+            if (it == orderViewEntity) {
+                orderViewEntity.copy(isReady = true)
+            } else {
+                it
+            }
+        })
         viewModelScope.launch(Dispatchers.IO) {
-            delay(300)
-            _viewEntities.postValue(_viewEntities.value!!.map {
-                if (it is OrderViewEntity && it.id.equals(orderId, ignoreCase = true)) {
-                    it.copy(isReady = true)
-                } else {
-                    it
-                }
-            })
+            collection
+                .document("user" + orderViewEntity.id)
+                .update(
+                    mapOf(
+                        "email" to orderViewEntity.email,
+                        "food_order" to orderViewEntity.title,
+                        "slot" to orderViewEntity.slot,
+                        "user_id" to orderViewEntity.id,
+                        "status" to "Ready"
+                    )
+                )
         }
-    }
-
-    fun submitOrder(orderViewEntity: OrderViewEntity) {
-        db.collection("users")
-            .document("user" + orderViewEntity.id)
-            .update(mapOf(
-                "email" to orderViewEntity.email,
-                "food_order" to orderViewEntity.title,
-                "slot" to orderViewEntity.slot,
-                "user_id" to orderViewEntity.id,
-                "status" to "Ready"
-            ))
     }
 }
