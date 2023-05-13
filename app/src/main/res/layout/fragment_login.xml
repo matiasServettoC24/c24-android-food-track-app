@@ -58,6 +58,7 @@
                 app:boxBackgroundMode="outline"
                 app:endIconMode="password_toggle"
                 app:endIconTint="#673AB7"
+                app:passwordToggleTintMode="src_in"
                 app:expandedHintEnabled="true"
                 app:hintAnimationEnabled="true"
                 app:layout_constraintEnd_toEndOf="@id/guideline2"
