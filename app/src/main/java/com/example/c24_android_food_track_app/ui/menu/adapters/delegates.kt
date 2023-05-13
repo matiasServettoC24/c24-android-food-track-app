@@ -16,6 +16,7 @@ import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.databinding.MenuOrderPickedUpItemBinding
 import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
+import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 
 fun menuDelegate(
@@ -26,7 +27,13 @@ fun menuDelegate(
 
     bind {
         binding.dishTitle.text = item.dishTitle
-        binding.dishType.text = item.dishType
+        if (item.dishType == DishType.VEGETARIAN.name) {
+            binding.dishType.setImageResource(R.drawable.vegetarian_symbol)
+
+        } else {
+            binding.dishType.setImageResource(R.drawable.meat_icon)
+
+        }
     }
 
     binding.orderBtn.setOnClickListener { selectMenuCallback(item) }

@@ -23,15 +23,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Pizza 1" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <ImageView
             android:id="@+id/dishType"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:src="@drawable/vegetarian_symbol"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/order_btn"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="10dp"
-            tools:text="Vegeterian" />
+            app:layout_constraintStart_toEndOf="@+id/dishTitle"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/order_btn"

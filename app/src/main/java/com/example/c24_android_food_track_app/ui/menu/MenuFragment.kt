@@ -115,6 +115,7 @@ class MenuFragment : Fragment() {
 
     private fun showDishes(uiState: MenuUiState.DishSelection) {
         showViewEntities(uiState.dishList)
+
     }
 
     private fun selectMenuCallback(selectedMenu: MenuViewEntity) {
