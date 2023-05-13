@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.data.repositories.OrdersRepository
 import com.example.c24_android_food_track_app.domain.LoadingViewEntity
 import com.example.c24_android_food_track_app.domain.ViewEntity
-import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
+import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,7 @@ class AdminViewModel : ViewModel() {
                 repository.orders.collect {
                     _viewEntities.value = arrayListOf<ViewEntity>()
                         .apply { add(OrdersTitleViewEntity) }
-                        .apply { addAll(it) }
+                        .apply { addAll(it.map { OrderViewEntity(it) }) }
                 }
             }
             launch {
@@ -35,25 +35,23 @@ class AdminViewModel : ViewModel() {
         }
     }
 
-    fun onOrderReady(orderViewEntity: FoodTrackOrder) {
-        _viewEntities.value = _viewEntities.value.map {
-            if (it == orderViewEntity) {
-                orderViewEntity.copy(status = Status.Ready)
-            } else {
-                it
-            }
-        }
-        repository.onOrderReady(orderViewEntity)
+    fun onOrderReady(orderViewEntity: OrderViewEntity) {
+        updateOrderState(orderViewEntity, Status.Ready)
+        repository.onOrderReady(orderViewEntity.order)
     }
 
-    fun onOrderPickedUp(orderViewEntity: FoodTrackOrder) {
+    fun onOrderPickedUp(orderViewEntity: OrderViewEntity) {
+        updateOrderState(orderViewEntity, Status.Picked)
+        repository.deliverOrder(orderViewEntity.order)
+    }
+
+    private fun updateOrderState(order: OrderViewEntity, state: Status) {
         _viewEntities.value = _viewEntities.value.map {
-            if (it == orderViewEntity) {
-                orderViewEntity.copy(status = Status.Picked)
+            if (it == order) {
+                order.copy(order = order.order.copy(status = state))
             } else {
                 it
             }
         }
-        repository.deliverOrder(orderViewEntity)
     }
 }

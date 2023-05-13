@@ -3,7 +3,7 @@ package com.example.c24_android_food_track_app.data.repositories
 import android.util.Log
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
-import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
+import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -121,22 +121,22 @@ class OrdersRepository {
             }
     }
 
-    fun onOrderReady(orderViewEntity: FoodTrackOrder) {
+    fun onOrderReady(order: FoodTrackOrder) {
         collection
-            .document("user" + orderViewEntity.id)
+            .document("user" + order.id)
             .update(
                 mapOf(
-                    "email" to orderViewEntity.email,
-                    "food_order" to orderViewEntity.title,
-                    "slot" to orderViewEntity.slot,
-                    "user_id" to orderViewEntity.id,
-                    "time_start" to orderViewEntity.timeStart,
+                    "email" to order.email,
+                    "food_order" to order.title,
+                    "slot" to order.slot,
+                    "user_id" to order.id,
+                    "time_start" to order.timeStart,
                     "status" to Status.Ready
                 )
             )
     }
 
-    fun placeOrder(foodOrder: String, selectedSlot: TimeSlotViewEntity) {
+    fun placeOrder(foodOrder: String, selectedSlot: TimeSlot) {
         firebaseAuth.currentUser?.let { user ->
             collection
                 .document("user" + user.uid)

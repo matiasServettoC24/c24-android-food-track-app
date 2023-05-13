@@ -14,10 +14,9 @@ import com.example.c24_android_food_track_app.databinding.FragmentMenuBinding
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
-import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
+import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.adapters.MenuAdapter
-import com.example.c24_android_food_track_app.ui.menu.models.Dish
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -117,7 +116,7 @@ class MenuFragment : Fragment() {
         }
     }
 
-    private fun selectTimeCallback(selectedSlot: TimeSlotViewEntity) {
+    private fun selectTimeCallback(selectedSlot: TimeSlot) {
         viewLifecycleOwner.lifecycleScope.launch {
             menuViewModel.updateSlotAndSendOrder(selectedSlot)
         }

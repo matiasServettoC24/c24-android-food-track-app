@@ -12,17 +12,11 @@ import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.AsapBtnViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
-import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
+import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import kotlin.math.abs
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -93,7 +87,7 @@ class MenuViewModel : ViewModel() {
         updateTimeSlots(slotsRepository.slots.value)
     }
 
-    private fun updateTimeSlots(slots: List<TimeSlotViewEntity>) {
+    private fun updateTimeSlots(slots: List<TimeSlot>) {
         _uiState.value = MenuUiState.TimeSelection(
             arrayListOf<ViewEntity>()
                 .apply { add(AsapBtnViewEntity) }
@@ -101,13 +95,13 @@ class MenuViewModel : ViewModel() {
         )
     }
 
-    fun updateSlotAndSendOrder(selectedSlot: TimeSlotViewEntity) {
+    fun updateSlotAndSendOrder(selectedSlot: TimeSlot) {
         val selectedMenu = selectedMenu ?: return
         updateSlotInDb(selectedSlot)
         ordersRepository.placeOrder(selectedMenu.dishTitle, selectedSlot)
     }
 
-    private fun updateSlotInDb(slot: TimeSlotViewEntity) {
+    private fun updateSlotInDb(slot: TimeSlot) {
         slotsRepository.useSlot(slot)
     }
 

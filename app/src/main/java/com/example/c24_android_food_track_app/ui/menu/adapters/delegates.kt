@@ -12,7 +12,7 @@ import com.example.c24_android_food_track_app.domain.menu.AsapBtnViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
-import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
+import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
@@ -37,7 +37,7 @@ fun menuDelegate(
     binding.orderBtn.setOnClickListener { selectMenuCallback(item) }
 }
 
-fun timeSlotDelegate(selectTimeSlotCallback: (TimeSlotViewEntity) -> Unit) = adapterDelegate<TimeSlotViewEntity, ViewEntity>(R.layout.timeslot_item) {
+fun timeSlotDelegate(selectTimeSlotCallback: (TimeSlot) -> Unit) = adapterDelegate<TimeSlot, ViewEntity>(R.layout.timeslot_item) {
 
     val binding = TimeslotItemBinding.bind(itemView)
 
