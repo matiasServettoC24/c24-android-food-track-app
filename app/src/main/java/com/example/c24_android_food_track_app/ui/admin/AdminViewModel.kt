@@ -6,6 +6,7 @@ import com.example.c24_android_food_track_app.data.repositories.OrdersRepository
 import com.example.c24_android_food_track_app.domain.LoadingViewEntity
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.data.models.Status
+import com.example.c24_android_food_track_app.domain.admin.EmptyQueueViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,7 @@ class AdminViewModel : ViewModel() {
                     _viewEntities.value = arrayListOf<ViewEntity>()
                         .apply { add(OrdersTitleViewEntity) }
                         .apply { addAll(it.map { OrderViewEntity(it) }) }
+                        .apply { if (size == 1) { add(EmptyQueueViewEntity) } }
                 }
             }
             launch {
