@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#4CAF50"
             android:text="@string/select"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
