@@ -8,7 +8,7 @@
     <string name="order_btn_text">Order</string>
     <string name="select">Select</string>
     <string name="error_retry">Retry</string>
-    <string name="asap">ASAP</string>
+    <string name="asap">As soon as possible</string>
     <string name="admin_orders_title">Orders:</string>
     <string name="login_password">Password</string>
 </resources>
