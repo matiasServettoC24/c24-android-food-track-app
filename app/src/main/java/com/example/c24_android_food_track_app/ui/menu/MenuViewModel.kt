@@ -83,13 +83,10 @@ class MenuViewModel : ViewModel() {
     fun loadTimeSlots(selectedMenu: MenuViewEntity) {
         this.selectedMenu = selectedMenu
         db.collection("Slots")
-            .addSnapshotListener { value, e ->
+            .get()
+            .addOnSuccessListener { value ->
                 val slots = ArrayList<ViewEntity>()
                 slots.add( AsapBtnViewEntity)
-                if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
-                    return@addSnapshotListener
-                }
 
                 for (doc in value!!) {
                     val slotId = doc.getString("slot_id")
