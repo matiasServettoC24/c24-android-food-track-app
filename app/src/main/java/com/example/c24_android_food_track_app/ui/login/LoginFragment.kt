@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.c24_android_food_track_app.R
 import com.example.c24_android_food_track_app.databinding.FragmentLoginBinding
 import com.example.c24_android_food_track_app.util.Resource
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -57,26 +58,27 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.login.collect {
-                        when (it) {
-                            is Resource.Loading -> {
-                                binding.btnLogin.visibility = View.INVISIBLE
-                                binding.loginProgressBar.visibility = View.VISIBLE
-                            }
-                            is Resource.Success -> {
-                                binding.loginProgressBar.visibility = View.GONE
-                                findNavController().navigate(R.id.action_navigation_home_to_navigation_dashboard)
-                            }
-                            is Resource.Error -> {
-                                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                                binding.btnLogin.visibility = View.VISIBLE
-                                binding.loginProgressBar.visibility = View.GONE
-                            }
-                            else -> Unit
-                        }
+                        updateLoginState(it)
                     }
                 }
             }
         }
     }
 
+    private fun updateLoginState(it: Resource<FirebaseUser>) = when (it) {
+        is Resource.Loading -> {
+            binding.btnLogin.visibility = View.INVISIBLE
+            binding.loginProgressBar.visibility = View.VISIBLE
+        }
+        is Resource.Success -> {
+            binding.loginProgressBar.visibility = View.GONE
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_dashboard)
+        }
+        is Resource.Error -> {
+            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+            binding.btnLogin.visibility = View.VISIBLE
+            binding.loginProgressBar.visibility = View.GONE
+        }
+        else -> Unit
+    }
 }
