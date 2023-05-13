@@ -35,8 +35,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            etEmail.setText("matias.servetto@check24.de")
-            etPassword.setText("000000000")
+//            etEmail.setText("matias.servetto@check24.de")
+//            etPassword.setText("000000000")
             btnLogin.setOnClickListener {
                 val email = etEmail.text.toString().trim()
                 val password = etPassword.text.toString()

@@ -21,6 +21,12 @@ class LoginViewModel @Inject constructor(
     private val _login = MutableStateFlow<Resource<FirebaseUser>>(Resource.Init())
     val login: Flow<Resource<FirebaseUser>> = _login.asSharedFlow()
 
+    init {
+        firebaseAuth.currentUser?.let { user ->
+            viewModelScope.launch {_login.emit(Resource.Success(user)) }
+        }
+    }
+
     fun login(email: String, password: String) {
         val user = firebaseAuth.currentUser
         if (user != null) {
