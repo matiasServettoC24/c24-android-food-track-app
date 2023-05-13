@@ -56,15 +56,14 @@
                 android:hint="@string/login_password"
                 app:boxBackgroundColor="#ffff"
                 app:boxBackgroundMode="outline"
-                app:endIconMode="clear_text"
+                app:endIconMode="password_toggle"
+                app:endIconTint="#673AB7"
                 app:expandedHintEnabled="true"
                 app:hintAnimationEnabled="true"
                 app:layout_constraintEnd_toEndOf="@id/guideline2"
                 app:layout_constraintStart_toStartOf="@id/guideline"
                 app:layout_constraintTop_toBottomOf="@id/emailTextField"
                 app:passwordToggleContentDescription="password"
-                app:passwordToggleDrawable="@drawable/baseline_lock_24"
-                app:passwordToggleEnabled="true"
                 app:startIconDrawable="@drawable/baseline_lock_24"
                 app:startIconTint="#673AB7">
 
