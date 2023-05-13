@@ -16,6 +16,7 @@ import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +33,8 @@ class MenuViewModel : ViewModel() {
     val uiState: StateFlow<MenuUiState> = _uiState
 
     private val db = Firebase.firestore
+    private val slotsCollection = db.collection("Slots")
+
     private val repository = OrdersRepository()
 
     private var selectedMenu: MenuViewEntity? = null
@@ -82,7 +85,7 @@ class MenuViewModel : ViewModel() {
 
     fun loadTimeSlots(selectedMenu: MenuViewEntity) {
         this.selectedMenu = selectedMenu
-        db.collection("Slots")
+        slotsCollection
             .get()
             .addOnSuccessListener { value ->
                 val slots = ArrayList<ViewEntity>()
@@ -126,7 +129,7 @@ class MenuViewModel : ViewModel() {
     }
 
     private fun updateSlotInDb(slot: TimeSlotViewEntity) {
-        db.collection("Slots")
+        slotsCollection
             .document("slot" + slot.slotId)
             .update(
                 mapOf(
@@ -141,8 +144,7 @@ class MenuViewModel : ViewModel() {
     fun asapOrder() {
         val slots = ArrayList<TimeSlotViewEntity>()
 
-        val docRef = db.collection("Slots")
-        docRef.get()
+        slotsCollection.get()
             .addOnSuccessListener { document ->
                 for (doc in document!!) {
                     val slotId = doc.getString("slot_id")
