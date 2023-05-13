@@ -20,13 +20,9 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.Random
 import kotlin.math.abs
-import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -126,8 +122,9 @@ class MenuViewModel : ViewModel() {
             }
     }
 
-    fun sendOrder(selectedSlot: TimeSlotViewEntity) {
+    fun updateSlotAndSendOrder(selectedSlot: TimeSlotViewEntity) {
         val selectedMenu = selectedMenu ?: return
+        updateSlotInDb(selectedSlot)
         repository.placeOrder(selectedMenu.dishTitle, selectedSlot.slotId, selectedSlot.timeStart + " - " + selectedSlot.timeEnd)
     }
 
@@ -183,7 +180,12 @@ class MenuViewModel : ViewModel() {
 
              updateSlotInDb(nearestEmptySlot)
              // add user/order in the DB
-                sendOrder(nearestEmptySlot)
+                selectedMenu?.let {
+                    repository.placeOrder(
+                        selectedMenu!!.dishTitle,
+                        nearestEmptySlot.slotId,
+                        nearestEmptySlot.timeStart + " - " + nearestEmptySlot.timeEnd)
+                }
             }
             .addOnFailureListener { exception ->
                 //Log.d(TAG, "get failed with ", exception)

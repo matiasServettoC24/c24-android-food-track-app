@@ -115,7 +115,7 @@ class MenuFragment : Fragment() {
 
     private fun selectTimeCallback(selectedSlot: TimeSlotViewEntity) {
         viewLifecycleOwner.lifecycleScope.launch {
-            menuViewModel.sendOrder(selectedSlot)
+            menuViewModel.updateSlotAndSendOrder(selectedSlot)
         }
     }
 
