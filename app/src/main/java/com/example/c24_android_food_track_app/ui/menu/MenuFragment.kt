@@ -45,7 +45,6 @@ class MenuFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            menuViewModel.loadDishes()
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch { menuViewModel.uiState.collectLatest(::onUiStateUpdated) }
             }

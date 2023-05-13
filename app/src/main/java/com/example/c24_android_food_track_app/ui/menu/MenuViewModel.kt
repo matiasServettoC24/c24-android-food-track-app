@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
 import com.example.c24_android_food_track_app.data.repositories.OrdersRepository
 import com.example.c24_android_food_track_app.domain.ViewEntity
@@ -31,43 +32,43 @@ class MenuViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.currentOrder.collect { currentOrder ->
                 if (currentOrder == null) {
-                    _uiState.value = MenuUiState.DishSelection(
-                        listOf(
-                            MenuTitleViewEntity,
-                            MenuViewEntity(dishTitle = "Pizza1", dishType = DishType.NON_VEGETARIAN.name),
-                            MenuViewEntity(dishTitle = "Pizza2", dishType = DishType.VEGETARIAN.name),
-                            MenuViewEntity(dishTitle = "Pizza3", dishType = DishType.NON_VEGETARIAN.name),
-                            MenuViewEntity(dishTitle = "Pizza4", dishType = DishType.VEGETARIAN.name),
-                            MenuViewEntity(dishTitle = "Pizza5", dishType = DishType.NON_VEGETARIAN.name),
-                            MenuViewEntity(dishTitle = "Pizza6", dishType = DishType.VEGETARIAN.name),
-                        )
-                    )
+                    loadMenu()
                 } else {
-                    _uiState.emit(
-                        when (currentOrder.status) {
-                            Status.Ordered, Status.Picked -> MenuUiState.WaitingForOrder(currentOrder.title)
-                            Status.Ready -> MenuUiState.OrderReady(currentOrder.title)
-                        }
-                    )
+                    loadCurrentOrder(currentOrder)
                 }
             }
         }
     }
 
-    suspend fun loadDishes() {
-//        _uiState.emit(
-//            MenuUiState.DishSelection(
-//                listOf(
-//                    MenuTitleViewEntity,
-//                    MenuViewEntity(dishTitle = "Pizza1", dishType = DishType.NON_VEGETARIAN.name),
-//                    MenuViewEntity(dishTitle = "Pizza2", dishType = DishType.VEGETARIAN.name),
-//                    MenuViewEntity(dishTitle = "Pizza3", dishType = DishType.NON_VEGETARIAN.name),
-//                    MenuViewEntity(dishTitle = "Pizza4", dishType = DishType.VEGETARIAN.name),
-//                    MenuViewEntity(dishTitle = "Pizza5", dishType = DishType.NON_VEGETARIAN.name),
-//                    MenuViewEntity(dishTitle = "Pizza6", dishType = DishType.VEGETARIAN.name),
-//                )
-//            )
-//        )
+    private suspend fun loadCurrentOrder(currentOrder: FoodTrackOrder) {
+        _uiState.emit(
+            when (currentOrder.status) {
+                Status.Ordered, Status.Picked -> MenuUiState.WaitingForOrder(currentOrder.title)
+                Status.Ready -> MenuUiState.OrderReady(currentOrder.title)
+            }
+        )
+    }
+
+    private fun loadMenu() {
+        _uiState.value = MenuUiState.DishSelection(
+            listOf(
+                MenuTitleViewEntity,
+                MenuViewEntity(
+                    dishTitle = "Pizza Mozzarella",
+                    dishType = DishType.NON_VEGETARIAN.name
+                ),
+                MenuViewEntity(dishTitle = "Pizza Margarita", dishType = DishType.VEGETARIAN.name),
+                MenuViewEntity(
+                    dishTitle = "Pizza Pepperoni",
+                    dishType = DishType.NON_VEGETARIAN.name
+                ),
+                MenuViewEntity(
+                    dishTitle = "Pizza Quattro Formaggi",
+                    dishType = DishType.VEGETARIAN.name
+                ),
+                MenuViewEntity(dishTitle = "Pizza Veggie", dishType = DishType.VEGETARIAN.name),
+            )
+        )
     }
 
     fun loadTimeSlots() {
