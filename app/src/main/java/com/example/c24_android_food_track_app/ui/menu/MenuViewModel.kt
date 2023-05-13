@@ -91,6 +91,7 @@ class MenuViewModel : ViewModel() {
     private fun updateTimeSlots(slots: List<TimeSlot>) {
         _uiState.value = MenuUiState.TimeSelection(
             arrayListOf<ViewEntity>()
+                .apply { add(MenuTitleViewEntity) }
                 .apply { add(AsapBtnViewEntity) }
                 .apply { addAll(slots) }
         )
