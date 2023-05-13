@@ -121,16 +121,16 @@ class OrdersRepository {
             }
     }
 
-    fun onOrderReady(orderViewEntity: FoodTrackOrder) {
+    fun onOrderReady(order: FoodTrackOrder) {
         collection
-            .document("user" + orderViewEntity.id)
+            .document("user" + order.id)
             .update(
                 mapOf(
-                    "email" to orderViewEntity.email,
-                    "food_order" to orderViewEntity.title,
-                    "slot" to orderViewEntity.slot,
-                    "user_id" to orderViewEntity.id,
-                    "time_start" to orderViewEntity.timeStart,
+                    "email" to order.email,
+                    "food_order" to order.title,
+                    "slot" to order.slot,
+                    "user_id" to order.id,
+                    "time_start" to order.timeStart,
                     "status" to Status.Ready
                 )
             )

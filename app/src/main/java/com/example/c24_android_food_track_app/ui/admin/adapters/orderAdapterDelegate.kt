@@ -5,20 +5,21 @@ import com.example.c24_android_food_track_app.databinding.AdminOrderItemBinding
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
+import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 
 fun orderAdapterDelegate(
-    onOrderReadyCallback: (FoodTrackOrder) -> Unit,
-    onOrderPickedUpCallback: (FoodTrackOrder) -> Unit,
-) = adapterDelegate<FoodTrackOrder, ViewEntity>(R.layout.admin_order_item) {
+    onOrderReadyCallback: (OrderViewEntity) -> Unit,
+    onOrderPickedUpCallback: (OrderViewEntity) -> Unit,
+) = adapterDelegate<OrderViewEntity, ViewEntity>(R.layout.admin_order_item) {
 
     val binding = AdminOrderItemBinding.bind(itemView)
 
     bind {
-        binding.email.text = item.email
-        binding.orderTitle.text = item.title
-        binding.orderTime.text = item.slotTime
-        when (item.status) {
+        binding.email.text = item.order.email
+        binding.orderTitle.text = item.order.title
+        binding.orderTime.text = item.order.slotTime
+        when (item.order.status) {
             Status.Ordered -> {
                 binding.orderReadyButton.text = "READY"
                 binding.orderReadyButton.isEnabled = true

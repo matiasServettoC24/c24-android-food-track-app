@@ -10,4 +10,4 @@ data class FoodTrackOrder(
     val slot: String,
     val timeStart: String,
     val slotTime: String?,
-) : ViewEntity
+)
