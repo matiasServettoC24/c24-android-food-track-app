@@ -67,11 +67,13 @@ class MenuFragment : Fragment() {
     }
 
     private fun showOrderReady(uiState: MenuUiState.OrderReady) {
-        showViewEntities(listOf(OrderReadyViewEntity(uiState.orderTitle)))
+        showViewEntities(listOf(OrderReadyViewEntity(uiState.currentOrder.title)))
     }
 
     private fun showWaitingForOrder(uiState: MenuUiState.WaitingForOrder) {
-        showViewEntities(listOf(WaitingForOrderViewEntity(uiState.orderTitle)))
+        showViewEntities(listOf(WaitingForOrderViewEntity(
+            uiState.currentOrder.title, uiState.currentOrder.slotTime
+        )))
     }
 
     private fun showTimeSlots(uiState: MenuUiState.TimeSelection) {

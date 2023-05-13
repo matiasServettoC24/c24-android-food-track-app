@@ -48,7 +48,7 @@ fun waitingForOrderAdapterDelegate() = adapterDelegate<WaitingForOrderViewEntity
     val binding = MenuWaitingForOrderItemBinding.bind(itemView)
 
     bind {
-        binding.order.text = "Enjoy your ${item.orderTitle}"
+        binding.order.text = "Preparing your ${item.orderTitle} at ${item.orderTime}"
     }
 }
 

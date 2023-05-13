@@ -56,8 +56,8 @@ class MenuViewModel : ViewModel() {
     private suspend fun loadCurrentOrder(currentOrder: FoodTrackOrder) {
         _uiState.emit(
             when (currentOrder.status) {
-                Status.Ordered, Status.Picked -> MenuUiState.WaitingForOrder(currentOrder.title)
-                Status.Ready -> MenuUiState.OrderReady(currentOrder.title)
+                Status.Ordered, Status.Picked -> MenuUiState.WaitingForOrder(currentOrder)
+                Status.Ready -> MenuUiState.OrderReady(currentOrder)
             }
         )
     }
