@@ -55,7 +55,7 @@ class SlotsRepository {
 
             }
             _slots.value = slots.sortedBy {
-                abs(LocalTime.now().toSecondOfDay() - LocalTime.parse(it.timeStart, formatter).toSecondOfDay())
+                LocalTime.parse(it.timeStart, formatter).toSecondOfDay()
             }
         }
     }

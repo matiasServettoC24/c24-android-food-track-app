@@ -28,7 +28,6 @@ class MenuFragment : Fragment() {
 
     private var _binding: FragmentMenuBinding? = null
     private var _adapter: MenuAdapter? = null
-    private val  dish: DishType? = null
 
     private val binding get() = _binding!!
     private val adapter get() = _adapter!!
