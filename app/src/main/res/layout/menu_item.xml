@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dishType"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Pizza 1" />
 
@@ -27,10 +27,10 @@
             android:id="@+id/dishType"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:src="@drawable/vegetarian_symbol"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dishTitle"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
