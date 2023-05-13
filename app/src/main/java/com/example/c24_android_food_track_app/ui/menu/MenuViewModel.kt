@@ -114,10 +114,10 @@ class MenuViewModel : ViewModel() {
     fun asapOrder() {
         val slots = slotsRepository.slots.value
 
-        val formatter = DateTimeFormatter.ofPattern("hh:mm a")
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
         val nearestEmptySlot = slots.maxBy {
             abs(LocalTime.now().toSecondOfDay() -
-                    LocalTime.parse(it.timeStart + " PM", formatter).toSecondOfDay())
+                    LocalTime.parse(it.timeStart, formatter).toSecondOfDay())
         }
 
         updateSlotInDb(nearestEmptySlot)
