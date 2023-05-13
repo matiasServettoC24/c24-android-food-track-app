@@ -53,7 +53,8 @@ class OrdersRepository {
                                     title = orderTitle,
                                     status = orderStatus,
                                     email = email,
-                                    slot = slot
+                                    slot = slot,
+                                    timestamp = ""
                                 )
                                 return@addSnapshotListener
                             }
@@ -94,7 +95,8 @@ class OrdersRepository {
                                 title = orderTitle,
                                 status = Status.valueOf(status),
                                 email = email,
-                                slot = slot
+                                slot = slot,
+                                timestamp = ""
                             )
                         )
                     }
