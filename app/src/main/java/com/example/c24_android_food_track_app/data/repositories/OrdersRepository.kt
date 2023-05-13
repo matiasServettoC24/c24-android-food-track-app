@@ -55,7 +55,7 @@ class OrdersRepository {
                             return@addSnapshotListener
                         }
                     }
-
+                    _currentOrder.value = null
                 }
         }
     }
@@ -114,14 +114,6 @@ class OrdersRepository {
 
     fun placeOrder(foodOrder: String, slot: String) {
         firebaseAuth.currentUser?.let { user ->
-//            _currentOrder.value = FoodTrackOrder(
-//                "user" + user.uid,
-//                foodOrder,
-//                false,
-//                "ordering",
-//                user.email!!,
-//                slot
-//            )
             collection
                 .document("user" + user.uid)
                 .set(
