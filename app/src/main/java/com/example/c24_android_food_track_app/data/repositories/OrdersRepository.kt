@@ -1,6 +1,8 @@
 package com.example.c24_android_food_track_app.data.repositories
 
+import android.util.Log
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +16,51 @@ class OrdersRepository {
     private val db = Firebase.firestore
     private val collection get() = db.collection("Users")
 
-    suspend fun initDataBase() {
+    private val firebaseAuth = FirebaseAuth.getInstance()
+
+    private val _currentOrder = MutableStateFlow<FoodTrackOrder?>(null)
+    val currentOrder: StateFlow<FoodTrackOrder?> = _currentOrder
+
+    fun initOrderDataBase() {
+        firebaseAuth.currentUser?.let { user ->
+            collection
+                .whereEqualTo("email", user.email!!)
+                .addSnapshotListener { value, e ->
+                    if (e != null) {
+                        _currentOrder.value = null
+                        return@addSnapshotListener
+                    }
+                    for (doc in value!!) {
+                        val id = doc.getString("user_id")
+                        val orderTitle = doc.getString("food_order")
+
+
+                        val email = doc.getString("email")
+                        val slot = doc.getString("slot")
+                        val status = doc.getString("status")
+
+                        if (id != null
+                            && orderTitle != null
+                            && status != null
+                            && slot != null
+                            && email != null
+                        ) {
+                            _currentOrder.value = FoodTrackOrder(
+                                id, orderTitle,
+                                false,
+                                status = status,
+                                email = email,
+                                slot = slot
+                            )
+                            return@addSnapshotListener
+                        }
+                    }
+                    _currentOrder.value = null
+                }
+        }
+    }
+
+    fun initOrdersDataBase() {
         collection
             .whereEqualTo("status", "ordered")
             .addSnapshotListener { value, e ->
@@ -65,4 +111,25 @@ class OrdersRepository {
                 )
             )
     }
+
+    fun placeOrder(foodOrder: String, slot: String) {
+        firebaseAuth.currentUser?.let { user ->
+            collection
+                .document("user" + user.uid)
+                .set(
+                    mapOf(
+                        "email" to user.email,
+                        "food_order" to foodOrder,
+                        "slot" to slot,
+                        "user_id" to user.uid,
+                        "status" to "ordered"
+                    )
+                )
+                .addOnCompleteListener {
+                    Log.d("Mati", "place order completed")
+                }
+        }
+    }
+
+
 }

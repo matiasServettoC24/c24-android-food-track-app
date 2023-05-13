@@ -29,7 +29,7 @@ class AdminViewModel : ViewModel() {
                 }
             }
             launch {
-                repository.initDataBase()
+                repository.initOrdersDataBase()
             }
         }
     }

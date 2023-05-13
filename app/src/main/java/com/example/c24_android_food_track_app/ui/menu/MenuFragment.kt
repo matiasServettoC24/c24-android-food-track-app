@@ -112,7 +112,9 @@ class MenuFragment : Fragment() {
 
     private fun selectTimeCallback() {
         viewLifecycleOwner.lifecycleScope.launch {
-            menuViewModel.sendOrder()
+            val foodOrder = "Pizza Muzzarella"
+            val slotId = "1"
+            menuViewModel.sendOrder(foodOrder, slotId)
         }
     }
 
