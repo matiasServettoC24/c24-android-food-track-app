@@ -12,5 +12,7 @@ sealed class MenuUiState {
 
     data class OrderReady(val currentOrder: FoodTrackOrder) : MenuUiState()
 
+    data class OrderPicked(val currentOrder: FoodTrackOrder) : MenuUiState()
+
     object Error : MenuUiState()
 }

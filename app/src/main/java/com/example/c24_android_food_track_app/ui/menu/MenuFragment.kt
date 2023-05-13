@@ -1,5 +1,6 @@
 package com.example.c24_android_food_track_app.ui.menu
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +16,14 @@ import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.data.models.TimeSlot
+import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.adapters.MenuAdapter
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@SuppressLint("NewApi")
 class MenuFragment : Fragment() {
 
     private var _binding: FragmentMenuBinding? = null
@@ -65,7 +68,12 @@ class MenuFragment : Fragment() {
             is MenuUiState.TimeSelection -> showTimeSlots(uiState)
             is MenuUiState.OrderReady -> showOrderReady(uiState)
             is MenuUiState.WaitingForOrder -> showWaitingForOrder(uiState)
+            is MenuUiState.OrderPicked -> showOrderPickedup(uiState)
         }
+    }
+
+    private fun showOrderPickedup(uiState: MenuUiState.OrderPicked) {
+        showViewEntities(listOf(OrderPickedViewEntity(uiState.currentOrder.title)))
     }
 
     private fun showOrderReady(uiState: MenuUiState.OrderReady) {

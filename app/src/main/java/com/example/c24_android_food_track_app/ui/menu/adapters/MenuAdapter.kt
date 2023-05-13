@@ -16,4 +16,5 @@ class MenuAdapter(
     orderReadyAdapterDelegate(),
     asapBtnAdapterDelegate(asapBtnCallback),
     menuTitleAdapterDelegate(),
+    orderPickedUpAdapterDelegate(),
 )

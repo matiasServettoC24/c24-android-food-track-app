@@ -54,8 +54,9 @@ class MenuViewModel : ViewModel() {
         selectedMenu = null
         _uiState.emit(
             when (currentOrder.status) {
-                Status.Ordered, Status.Picked -> MenuUiState.WaitingForOrder(currentOrder)
+                Status.Ordered -> MenuUiState.WaitingForOrder(currentOrder)
                 Status.Ready -> MenuUiState.OrderReady(currentOrder)
+                Status.Picked -> MenuUiState.OrderPicked(currentOrder)
             }
         )
     }

@@ -56,18 +56,16 @@ class OrdersRepository {
                             && timeStart != null
                         ) {
                             val orderStatus = Status.values().first { it.name.equals(status, ignoreCase = true) }
-                            if (orderStatus != Status.Picked) {
-                                _currentOrder.value = FoodTrackOrder(
-                                    id = id,
-                                    title = orderTitle,
-                                    status = orderStatus,
-                                    email = email,
-                                    slot = slot,
-                                    timeStart = timeStart,
-                                    slotTime = slotTime,
-                                )
-                                return@addSnapshotListener
-                            }
+                            _currentOrder.value = FoodTrackOrder(
+                                id = id,
+                                title = orderTitle,
+                                status = orderStatus,
+                                email = email,
+                                slot = slot,
+                                timeStart = timeStart,
+                                slotTime = slotTime,
+                            )
+                            return@addSnapshotListener
                         }
                     }
                     _currentOrder.value = null
