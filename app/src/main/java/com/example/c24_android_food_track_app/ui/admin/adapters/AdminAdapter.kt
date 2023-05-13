@@ -8,10 +8,11 @@ import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 class AdminAdapter(
     onOrderReadyCallback: (OrderViewEntity) -> Unit,
     onOrderPickedUpCallback: (OrderViewEntity) -> Unit,
+    deleteOrderCallback: (OrderViewEntity) -> Unit,
 ) : ListDelegationAdapter<List<ViewEntity>>(
     nonAuthAdminAdapterDelegate(),
     loadingAdapterDelegate(),
-    orderAdapterDelegate(onOrderReadyCallback, onOrderPickedUpCallback),
+    orderAdapterDelegate(onOrderReadyCallback, onOrderPickedUpCallback, deleteOrderCallback),
     ordersTitleAdapterDelegate(),
     errorAdapterDelegate(),
 )

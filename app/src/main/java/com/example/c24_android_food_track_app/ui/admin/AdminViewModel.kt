@@ -45,6 +45,10 @@ class AdminViewModel : ViewModel() {
         repository.deliverOrder(orderViewEntity.order)
     }
 
+    fun deleteOrder(orderViewEntity: OrderViewEntity) {
+        repository.deleteOrder(orderViewEntity.order)
+    }
+
     private fun updateOrderState(order: OrderViewEntity, state: Status) {
         _viewEntities.value = _viewEntities.value.map {
             if (it == order) {

@@ -56,18 +56,16 @@ class OrdersRepository {
                             && timeStart != null
                         ) {
                             val orderStatus = Status.values().first { it.name.equals(status, ignoreCase = true) }
-                            if (orderStatus != Status.Picked) {
-                                _currentOrder.value = FoodTrackOrder(
-                                    id = id,
-                                    title = orderTitle,
-                                    status = orderStatus,
-                                    email = email,
-                                    slot = slot,
-                                    timeStart = timeStart,
-                                    slotTime = slotTime,
-                                )
-                                return@addSnapshotListener
-                            }
+                            _currentOrder.value = FoodTrackOrder(
+                                id = id,
+                                title = orderTitle,
+                                status = orderStatus,
+                                email = email,
+                                slot = slot,
+                                timeStart = timeStart,
+                                slotTime = slotTime,
+                            )
+                            return@addSnapshotListener
                         }
                     }
                     _currentOrder.value = null
@@ -77,7 +75,6 @@ class OrdersRepository {
 
     fun initOrdersDataBase() {
         collection
-            .whereIn("status", arrayListOf(Status.Ordered, Status.Ready))
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     _orders.value = listOf()
@@ -157,17 +154,23 @@ class OrdersRepository {
         }
     }
 
-    fun deliverOrder(orderViewEntity: FoodTrackOrder) {
+    fun deliverOrder(order: FoodTrackOrder) {
         collection
-            .document("user" + orderViewEntity.id)
+            .document("user" + order.id)
             .update(
                 mapOf(
-                    "email" to orderViewEntity.email,
-                    "food_order" to orderViewEntity.title,
-                    "slot" to orderViewEntity.slot,
-                    "user_id" to orderViewEntity.id,
+                    "email" to order.email,
+                    "food_order" to order.title,
+                    "slot" to order.slot,
+                    "user_id" to order.id,
                     "status" to Status.Picked
                 )
             )
+    }
+
+    fun deleteOrder(order: FoodTrackOrder) {
+        collection
+            .document("user" + order.id)
+            .delete()
     }
 }

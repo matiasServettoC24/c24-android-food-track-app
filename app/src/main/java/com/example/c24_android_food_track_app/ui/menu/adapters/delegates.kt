@@ -13,6 +13,8 @@ import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.data.models.TimeSlot
+import com.example.c24_android_food_track_app.databinding.MenuOrderPickedUpItemBinding
+import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
@@ -62,6 +64,15 @@ fun waitingForOrderAdapterDelegate() = adapterDelegate<WaitingForOrderViewEntity
 fun orderReadyAdapterDelegate() = adapterDelegate<OrderReadyViewEntity, ViewEntity>(R.layout.menu_order_ready_item) {
 
     val binding = MenuOrderReadyItemBinding.bind(itemView)
+
+    bind {
+        binding.order.text = item.orderTitle
+    }
+}
+
+fun orderPickedUpAdapterDelegate() = adapterDelegate<OrderPickedViewEntity, ViewEntity>(R.layout.menu_order_picked_up_item) {
+
+    val binding = MenuOrderPickedUpItemBinding.bind(itemView)
 
     bind {
         binding.order.text = item.orderTitle
