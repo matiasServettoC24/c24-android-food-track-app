@@ -17,6 +17,8 @@ import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.adapters.MenuAdapter
+import com.example.c24_android_food_track_app.ui.menu.models.Dish
+import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -24,6 +26,7 @@ class MenuFragment : Fragment() {
 
     private var _binding: FragmentMenuBinding? = null
     private var _adapter: MenuAdapter? = null
+    private val  dish: DishType? = null
 
     private val binding get() = _binding!!
     private val adapter get() = _adapter!!
