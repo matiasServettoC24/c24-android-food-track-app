@@ -64,7 +64,7 @@ class MenuViewModel : ViewModel() {
     private fun loadMenu() {
         _uiState.value = MenuUiState.DishSelection(
             listOf(
-                MenuTitleViewEntity,
+                MenuTitleViewEntity("Select your meal:"),
                 MenuViewEntity(
                     dishTitle = "Pizza Mozzarella",
                     dishType = DishType.NON_VEGETARIAN.name
@@ -91,6 +91,7 @@ class MenuViewModel : ViewModel() {
     private fun updateTimeSlots(slots: List<TimeSlot>) {
         _uiState.value = MenuUiState.TimeSelection(
             arrayListOf<ViewEntity>()
+                .apply { add(MenuTitleViewEntity("Select the time:")) }
                 .apply { add(AsapBtnViewEntity) }
                 .apply { addAll(slots) }
         )

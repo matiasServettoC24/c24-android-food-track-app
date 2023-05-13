@@ -13,6 +13,7 @@ import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.data.models.TimeSlot
+import com.example.c24_android_food_track_app.databinding.AdminTitleItemBinding
 import com.example.c24_android_food_track_app.databinding.MenuOrderPickedUpItemBinding
 import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
@@ -87,5 +88,8 @@ fun asapBtnAdapterDelegate(asapBtnCallback: () -> Unit) = adapterDelegate<AsapBt
 
 fun menuTitleAdapterDelegate() =
     adapterDelegate<MenuTitleViewEntity, ViewEntity>(R.layout.admin_title_item) {
-        itemView.findViewById<TextView>(R.id.title).text = "Select your food:"
+        val binding = AdminTitleItemBinding.bind(itemView)
+        bind {
+            binding.title.text = item.title
+        }
     }
