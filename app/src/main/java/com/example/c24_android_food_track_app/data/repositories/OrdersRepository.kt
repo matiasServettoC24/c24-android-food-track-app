@@ -3,13 +3,19 @@ package com.example.c24_android_food_track_app.data.repositories
 import android.util.Log
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
+import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import kotlin.math.abs
 
 class OrdersRepository {
+
+    private val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
     private val _orders = MutableStateFlow<List<FoodTrackOrder>>(listOf())
     val orders: StateFlow<List<FoodTrackOrder>> = _orders
@@ -40,12 +46,14 @@ class OrdersRepository {
                         val slot = doc.getString("slot")
                         val status = doc.getString("status")
                         val slotTime = doc.getString("slot_time")
+                        val timeStart = doc.getString("time_start")
 
                         if (id != null
                             && orderTitle != null
                             && status != null
                             && slot != null
                             && email != null
+                            && timeStart != null
                         ) {
                             val orderStatus = Status.values().first { it.name.equals(status, ignoreCase = true) }
                             if (orderStatus != Status.Picked) {
@@ -55,7 +63,8 @@ class OrdersRepository {
                                     status = orderStatus,
                                     email = email,
                                     slot = slot,
-                                    slotTime = slotTime
+                                    timeStart = timeStart,
+                                    slotTime = slotTime,
                                 )
                                 return@addSnapshotListener
                             }
@@ -84,12 +93,14 @@ class OrdersRepository {
                     val slot = doc.getString("slot")
                     val status = doc.getString("status")
                     val slotTime = doc.getString("slot_time")
+                    val timeStart = doc.getString("time_start")
 
                     if (id != null
                         && orderTitle != null
                         && status != null
                         && slot != null
                         && email != null
+                        && timeStart != null
                     ) {
                         orders.add(
                             FoodTrackOrder(
@@ -98,12 +109,15 @@ class OrdersRepository {
                                 status = Status.valueOf(status),
                                 email = email,
                                 slot = slot,
+                                timeStart = timeStart,
                                 slotTime = slotTime,
                             )
                         )
                     }
                 }
-                _orders.value = orders
+                _orders.value = orders.sortedBy {
+                    abs(LocalTime.now().toSecondOfDay() - LocalTime.parse(it.timeStart, formatter).toSecondOfDay())
+                }
             }
     }
 
@@ -116,12 +130,13 @@ class OrdersRepository {
                     "food_order" to orderViewEntity.title,
                     "slot" to orderViewEntity.slot,
                     "user_id" to orderViewEntity.id,
+                    "time_start" to orderViewEntity.timeStart,
                     "status" to Status.Ready
                 )
             )
     }
 
-    fun placeOrder(foodOrder: String, slot: String, slotTime: String) {
+    fun placeOrder(foodOrder: String, selectedSlot: TimeSlotViewEntity) {
         firebaseAuth.currentUser?.let { user ->
             collection
                 .document("user" + user.uid)
@@ -129,10 +144,11 @@ class OrdersRepository {
                     mapOf(
                         "email" to user.email,
                         "food_order" to foodOrder,
-                        "slot" to slot,
+                        "slot" to selectedSlot.slotId,
                         "user_id" to user.uid,
                         "status" to Status.Ordered,
-                        "slot_time" to slotTime,
+                        "slot_time" to selectedSlot.timeStart + " - " + selectedSlot.timeEnd,
+                        "time_start" to selectedSlot.timeStart
                     )
                 )
                 .addOnCompleteListener {

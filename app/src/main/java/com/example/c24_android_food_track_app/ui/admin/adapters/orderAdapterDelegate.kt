@@ -15,6 +15,7 @@ fun orderAdapterDelegate(
     val binding = AdminOrderItemBinding.bind(itemView)
 
     bind {
+        binding.email.text = item.email
         binding.orderTitle.text = item.title
         binding.orderTime.text = item.slotTime
         when (item.status) {
