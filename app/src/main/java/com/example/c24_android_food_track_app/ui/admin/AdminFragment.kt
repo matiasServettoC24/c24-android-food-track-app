@@ -37,7 +37,7 @@ class AdminFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        _adapter = AdminAdapter(viewModel::onOrderReady, viewModel::onOrderPickedUp)
+        _adapter = AdminAdapter(viewModel::onOrderReady, viewModel::onOrderPickedUp, viewModel::deleteOrder)
         binding.recyclerView.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
