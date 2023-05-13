@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">c24-android-food-track-app</string>
+    <string name="app_name">CheckitoQ</string>
     <string name="title_home">Sign in</string>
     <string name="title_menu">Menu</string>
     <string name="title_admin">Orders</string>
