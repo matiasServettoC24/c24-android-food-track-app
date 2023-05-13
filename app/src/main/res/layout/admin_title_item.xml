@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="@dimen/title_margin_top"
+    android:layout_marginBottom="10dp"
     android:text="@string/admin_orders_title"
     android:textSize="@dimen/title"
     android:textStyle="bold" />
