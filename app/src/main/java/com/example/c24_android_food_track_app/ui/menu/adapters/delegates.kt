@@ -87,5 +87,5 @@ fun asapBtnAdapterDelegate(asapBtnCallback: () -> Unit) = adapterDelegate<AsapBt
 
 fun menuTitleAdapterDelegate() =
     adapterDelegate<MenuTitleViewEntity, ViewEntity>(R.layout.admin_title_item) {
-        itemView.findViewById<TextView>(R.id.title).text = "Menu:"
+        itemView.findViewById<TextView>(R.id.title).text = "Select your food:"
     }
