@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +18,7 @@ class LoginViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
-    private val _login = MutableSharedFlow<Resource<FirebaseUser>>()
+    private val _login = MutableStateFlow<Resource<FirebaseUser>>(Resource.Init())
     val login: Flow<Resource<FirebaseUser>> = _login.asSharedFlow()
 
     fun login(email: String, password: String) {
