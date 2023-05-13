@@ -1,7 +1,9 @@
 package com.example.c24_android_food_track_app.ui.menu
 
 import android.content.ContentValues
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
@@ -18,8 +20,16 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.util.Random
+import kotlin.math.abs
+import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 class MenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<MenuUiState>(MenuUiState.Loading)
     val uiState: StateFlow<MenuUiState> = _uiState
@@ -115,4 +125,72 @@ class MenuViewModel : ViewModel() {
     fun sendOrder(foodOrder: String, slotId: String) {
         repository.placeOrder(foodOrder, slotId)
     }
+    init {
+        asapOrder()
+    }
+
+    private fun updateSlotInDb(slot: Slots) {
+        db.collection("Slots")
+            .document("slot" + slot.slotId)
+            .update(
+                mapOf(
+                    "remaining_orders" to (slot.remainingOrders.toInt() - 1).toString(),
+                    "slot_id" to slot.slotId,
+                    "time_end" to slot.timeEnd,
+                    "time_start" to slot.timeStart
+                )
+            )
+    }
+
+    private fun asapOrder() {
+        val slots = ArrayList<Slots>()
+
+        val docRef = db.collection("Slots")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                for (doc in document!!) {
+                    val slotId = doc.getString("slot_id")
+                    val timeStart = doc.getString("time_start")
+                    val timeEnd = doc.getString("time_end")
+                    val remainingOrders = doc.getString("remaining_orders")
+
+                    if (slotId != null
+                        && timeStart != null
+                        && timeEnd != null
+                        && remainingOrders != null
+                    ) {
+                        if (remainingOrders.toInt() > 0) {
+                            // add to list the
+                            slots.add(
+                                Slots(
+                                    slotId = slotId,
+                                    timeStart = timeStart,
+                                    timeEnd = timeEnd,
+                                    remainingOrders = remainingOrders,
+                                )
+                            )
+                        }
+                    }
+                }
+
+                val formatter = DateTimeFormatter.ofPattern("hh:mm a")
+                val nearestEmptySlot = slots.maxBy {
+                    abs(LocalTime.now().toSecondOfDay() -
+                                LocalTime.parse(it.timeStart + " PM", formatter).toSecondOfDay())
+                }
+
+             updateSlotInDb(nearestEmptySlot)
+             // add user/order in the DB
+            }
+            .addOnFailureListener { exception ->
+                //Log.d(TAG, "get failed with ", exception)
+            }
+    }
+    data class Slots(
+        val slotId: String,
+        val timeStart: String,
+        val timeEnd: String,
+        val remainingOrders: String,
+    )
+
 }
