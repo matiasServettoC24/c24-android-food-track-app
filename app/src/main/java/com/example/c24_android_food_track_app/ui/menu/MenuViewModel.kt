@@ -131,7 +131,7 @@ class MenuViewModel : ViewModel() {
         repository.placeOrder(selectedMenu.dishTitle, selectedSlot.slotId, selectedSlot.timeStart + " - " + selectedSlot.timeEnd)
     }
 
-    private fun updateSlotInDb(slot: Slots) {
+    private fun updateSlotInDb(slot: TimeSlotViewEntity) {
         db.collection("Slots")
             .document("slot" + slot.slotId)
             .update(
@@ -145,7 +145,7 @@ class MenuViewModel : ViewModel() {
     }
 
     fun asapOrder() {
-        val slots = ArrayList<Slots>()
+        val slots = ArrayList<TimeSlotViewEntity>()
 
         val docRef = db.collection("Slots")
         docRef.get()
@@ -164,7 +164,7 @@ class MenuViewModel : ViewModel() {
                         if (remainingOrders.toInt() > 0) {
                             // add to list the
                             slots.add(
-                                Slots(
+                                TimeSlotViewEntity(
                                     slotId = slotId,
                                     timeStart = timeStart,
                                     timeEnd = timeEnd,
@@ -183,16 +183,10 @@ class MenuViewModel : ViewModel() {
 
              updateSlotInDb(nearestEmptySlot)
              // add user/order in the DB
+                sendOrder(nearestEmptySlot)
             }
             .addOnFailureListener { exception ->
                 //Log.d(TAG, "get failed with ", exception)
             }
     }
-    data class Slots(
-        val slotId: String,
-        val timeStart: String,
-        val timeEnd: String,
-        val remainingOrders: String,
-    )
-
 }
