@@ -6,6 +6,7 @@ import com.example.c24_android_food_track_app.data.repositories.OrdersRepository
 import com.example.c24_android_food_track_app.domain.LoadingViewEntity
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
+import com.example.c24_android_food_track_app.data.models.Status
 import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,11 +38,22 @@ class AdminViewModel : ViewModel() {
     fun onOrderReady(orderViewEntity: FoodTrackOrder) {
         _viewEntities.value = _viewEntities.value.map {
             if (it == orderViewEntity) {
-                orderViewEntity.copy(isReady = true)
+                orderViewEntity.copy(status = Status.Ready)
             } else {
                 it
             }
         }
         repository.onOrderReady(orderViewEntity)
+    }
+
+    fun onOrderPickedUp(orderViewEntity: FoodTrackOrder) {
+        _viewEntities.value = _viewEntities.value.map {
+            if (it == orderViewEntity) {
+                orderViewEntity.copy(status = Status.Picked)
+            } else {
+                it
+            }
+        }
+        repository.deliverOrder(orderViewEntity)
     }
 }

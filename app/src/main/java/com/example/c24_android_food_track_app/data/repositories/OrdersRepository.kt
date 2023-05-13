@@ -2,6 +2,7 @@ package com.example.c24_android_food_track_app.data.repositories
 
 import android.util.Log
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
+import com.example.c24_android_food_track_app.data.models.Status
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -21,7 +22,7 @@ class OrdersRepository {
     private val _currentOrder = MutableStateFlow<FoodTrackOrder?>(null)
     val currentOrder: StateFlow<FoodTrackOrder?> = _currentOrder
 
-    fun initOrderDataBase() {
+    fun initCurrentOrderDataBase() {
         firebaseAuth.currentUser?.let { user ->
             collection
                 .whereEqualTo("email", user.email!!)
@@ -45,14 +46,17 @@ class OrdersRepository {
                             && slot != null
                             && email != null
                         ) {
-                            _currentOrder.value = FoodTrackOrder(
-                                id, orderTitle,
-                                false,
-                                status = status,
-                                email = email,
-                                slot = slot
-                            )
-                            return@addSnapshotListener
+                            val orderStatus = Status.values().first { it.name.equals(status, ignoreCase = true) }
+                            if (orderStatus != Status.Picked) {
+                                _currentOrder.value = FoodTrackOrder(
+                                    id = id,
+                                    title = orderTitle,
+                                    status = orderStatus,
+                                    email = email,
+                                    slot = slot
+                                )
+                                return@addSnapshotListener
+                            }
                         }
                     }
                     _currentOrder.value = null
@@ -62,7 +66,7 @@ class OrdersRepository {
 
     fun initOrdersDataBase() {
         collection
-            .whereEqualTo("status", "ordered")
+            .whereIn("status", arrayListOf(Status.Ordered, Status.Ready))
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     _orders.value = listOf()
@@ -86,8 +90,9 @@ class OrdersRepository {
                     ) {
                         orders.add(
                             FoodTrackOrder(
-                                id, orderTitle, false,
-                                status = status,
+                                id = id,
+                                title = orderTitle,
+                                status = Status.valueOf(status),
                                 email = email,
                                 slot = slot
                             )
@@ -107,7 +112,7 @@ class OrdersRepository {
                     "food_order" to orderViewEntity.title,
                     "slot" to orderViewEntity.slot,
                     "user_id" to orderViewEntity.id,
-                    "status" to "Ready"
+                    "status" to Status.Ready
                 )
             )
     }
@@ -122,7 +127,7 @@ class OrdersRepository {
                         "food_order" to foodOrder,
                         "slot" to slot,
                         "user_id" to user.uid,
-                        "status" to "ordered"
+                        "status" to Status.Ordered
                     )
                 )
                 .addOnCompleteListener {
@@ -131,5 +136,17 @@ class OrdersRepository {
         }
     }
 
-
+    fun deliverOrder(orderViewEntity: FoodTrackOrder) {
+        collection
+            .document("user" + orderViewEntity.id)
+            .update(
+                mapOf(
+                    "email" to orderViewEntity.email,
+                    "food_order" to orderViewEntity.title,
+                    "slot" to orderViewEntity.slot,
+                    "user_id" to orderViewEntity.id,
+                    "status" to Status.Picked
+                )
+            )
+    }
 }

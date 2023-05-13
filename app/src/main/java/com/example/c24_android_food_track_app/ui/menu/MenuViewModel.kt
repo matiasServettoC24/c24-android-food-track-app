@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.c24_android_food_track_app.data.models.Status
 import com.example.c24_android_food_track_app.data.repositories.OrdersRepository
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.AsapBtnViewEntity
@@ -11,13 +12,11 @@ import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
-import kotlinx.coroutines.delay
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MenuViewModel : ViewModel() {
@@ -28,7 +27,7 @@ class MenuViewModel : ViewModel() {
     private val repository = OrdersRepository()
 
     init {
-        viewModelScope.launch { repository.initOrderDataBase() }
+        viewModelScope.launch { repository.initCurrentOrderDataBase() }
         viewModelScope.launch(Dispatchers.IO) {
             repository.currentOrder.collect { currentOrder ->
                 if (currentOrder == null) {
@@ -45,11 +44,9 @@ class MenuViewModel : ViewModel() {
                     )
                 } else {
                     _uiState.emit(
-                        when (currentOrder.status.lowercase()) {
-                            "ordering" -> MenuUiState.WaitingForOrder(currentOrder.title)
-                            "ordered" -> MenuUiState.WaitingForOrder(currentOrder.title)
-                            "ready" -> MenuUiState.OrderReady(currentOrder.title)
-                            else -> MenuUiState.WaitingForOrder(currentOrder.title)
+                        when (currentOrder.status) {
+                            Status.Ordered, Status.Picked -> MenuUiState.WaitingForOrder(currentOrder.title)
+                            Status.Ready -> MenuUiState.OrderReady(currentOrder.title)
                         }
                     )
                 }

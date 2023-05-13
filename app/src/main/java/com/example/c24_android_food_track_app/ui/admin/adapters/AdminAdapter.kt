@@ -5,11 +5,12 @@ import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 class AdminAdapter(
-    onOrderReadyCallback: (FoodTrackOrder) -> Unit
+    onOrderReadyCallback: (FoodTrackOrder) -> Unit,
+    onOrderPickedUpCallback: (FoodTrackOrder) -> Unit,
 ) : ListDelegationAdapter<List<ViewEntity>>(
     nonAuthAdminAdapterDelegate(),
     loadingAdapterDelegate(),
-    orderAdapterDelegate(onOrderReadyCallback),
+    orderAdapterDelegate(onOrderReadyCallback, onOrderPickedUpCallback),
     ordersTitleAdapterDelegate(),
     errorAdapterDelegate(),
 )
