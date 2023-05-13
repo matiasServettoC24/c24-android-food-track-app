@@ -8,5 +8,5 @@ data class FoodTrackOrder(
     val status: Status,
     val email: String,
     val slot: String,
-    val timestamp: String
+    val slotTime: String?,
 ) : ViewEntity

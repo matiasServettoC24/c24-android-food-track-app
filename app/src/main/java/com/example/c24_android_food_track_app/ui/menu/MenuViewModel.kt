@@ -128,7 +128,7 @@ class MenuViewModel : ViewModel() {
 
     fun sendOrder(selectedSlot: TimeSlotViewEntity) {
         val selectedMenu = selectedMenu ?: return
-        repository.placeOrder(selectedMenu.dishTitle, selectedSlot.slotId)
+        repository.placeOrder(selectedMenu.dishTitle, selectedSlot.slotId, selectedSlot.timeStart + " - " + selectedSlot.timeEnd)
     }
 
     private fun updateSlotInDb(slot: Slots) {

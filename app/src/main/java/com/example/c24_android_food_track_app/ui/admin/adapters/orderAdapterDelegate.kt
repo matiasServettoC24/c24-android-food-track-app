@@ -16,6 +16,7 @@ fun orderAdapterDelegate(
 
     bind {
         binding.orderTitle.text = item.title
+        binding.orderTime.text = item.slotTime
         when (item.status) {
             Status.Ordered -> {
                 binding.orderReadyButton.text = "READY"

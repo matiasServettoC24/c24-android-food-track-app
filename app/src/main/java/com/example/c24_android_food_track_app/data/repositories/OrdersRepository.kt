@@ -39,6 +39,7 @@ class OrdersRepository {
                         val email = doc.getString("email")
                         val slot = doc.getString("slot")
                         val status = doc.getString("status")
+                        val slotTime = doc.getString("slot_time")
 
                         if (id != null
                             && orderTitle != null
@@ -54,7 +55,7 @@ class OrdersRepository {
                                     status = orderStatus,
                                     email = email,
                                     slot = slot,
-                                    timestamp = ""
+                                    slotTime = slotTime
                                 )
                                 return@addSnapshotListener
                             }
@@ -82,6 +83,7 @@ class OrdersRepository {
                     val email = doc.getString("email")
                     val slot = doc.getString("slot")
                     val status = doc.getString("status")
+                    val slotTime = doc.getString("slot_time")
 
                     if (id != null
                         && orderTitle != null
@@ -96,7 +98,7 @@ class OrdersRepository {
                                 status = Status.valueOf(status),
                                 email = email,
                                 slot = slot,
-                                timestamp = ""
+                                slotTime = slotTime,
                             )
                         )
                     }
@@ -119,7 +121,7 @@ class OrdersRepository {
             )
     }
 
-    fun placeOrder(foodOrder: String, slot: String) {
+    fun placeOrder(foodOrder: String, slot: String, slotTime: String) {
         firebaseAuth.currentUser?.let { user ->
             collection
                 .document("user" + user.uid)
@@ -129,7 +131,8 @@ class OrdersRepository {
                         "food_order" to foodOrder,
                         "slot" to slot,
                         "user_id" to user.uid,
-                        "status" to Status.Ordered
+                        "status" to Status.Ordered,
+                        "slot_time" to slotTime,
                     )
                 )
                 .addOnCompleteListener {
