@@ -31,11 +31,14 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MenuViewModel : ViewModel() {
+
     private val _uiState = MutableStateFlow<MenuUiState>(MenuUiState.Loading)
     val uiState: StateFlow<MenuUiState> = _uiState
 
     private val db = Firebase.firestore
     private val repository = OrdersRepository()
+
+    private var selectedMenu: MenuViewEntity? = null
 
     init {
         viewModelScope.launch { repository.initCurrentOrderDataBase() }
@@ -81,7 +84,8 @@ class MenuViewModel : ViewModel() {
         )
     }
 
-    fun loadTimeSlots() {
+    fun loadTimeSlots(selectedMenu: MenuViewEntity) {
+        this.selectedMenu = selectedMenu
         db.collection("Slots")
             .addSnapshotListener { value, e ->
                 val slots = ArrayList<ViewEntity>()
@@ -122,11 +126,9 @@ class MenuViewModel : ViewModel() {
             }
     }
 
-    fun sendOrder(foodOrder: String, slotId: String) {
-        repository.placeOrder(foodOrder, slotId)
-    }
-    init {
-        asapOrder()
+    fun sendOrder(selectedSlot: TimeSlotViewEntity) {
+        val selectedMenu = selectedMenu ?: return
+        repository.placeOrder(selectedMenu.dishTitle, selectedSlot.slotId)
     }
 
     private fun updateSlotInDb(slot: Slots) {
@@ -142,7 +144,7 @@ class MenuViewModel : ViewModel() {
             )
     }
 
-    private fun asapOrder() {
+    fun asapOrder() {
         val slots = ArrayList<Slots>()
 
         val docRef = db.collection("Slots")

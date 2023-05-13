@@ -17,7 +17,7 @@ import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEnt
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 
 fun menuDelegate(
-    orderCallback: () -> Unit
+    selectMenuCallback: (MenuViewEntity) -> Unit
 ) = adapterDelegate<MenuViewEntity, ViewEntity>(R.layout.menu_item) {
 
     val binding = MenuItemBinding.bind(itemView)
@@ -27,10 +27,10 @@ fun menuDelegate(
         binding.dishType.text = item.dishType
     }
 
-    binding.orderBtn.setOnClickListener { orderCallback() }
+    binding.orderBtn.setOnClickListener { selectMenuCallback(item) }
 }
 
-fun timeSlotDelegate(selectTimeSlotCallback: () -> Unit) = adapterDelegate<TimeSlotViewEntity, ViewEntity>(R.layout.timeslot_item) {
+fun timeSlotDelegate(selectTimeSlotCallback: (TimeSlotViewEntity) -> Unit) = adapterDelegate<TimeSlotViewEntity, ViewEntity>(R.layout.timeslot_item) {
 
     val binding = TimeslotItemBinding.bind(itemView)
 
@@ -40,7 +40,7 @@ fun timeSlotDelegate(selectTimeSlotCallback: () -> Unit) = adapterDelegate<TimeS
         binding.remainingSlots.text = item.remainingOrders
     }
 
-    binding.selectTimeSlotBtn.setOnClickListener { selectTimeSlotCallback() }
+    binding.selectTimeSlotBtn.setOnClickListener { selectTimeSlotCallback(item) }
 }
 
 fun waitingForOrderAdapterDelegate() = adapterDelegate<WaitingForOrderViewEntity, ViewEntity>(R.layout.menu_waiting_for_order_item) {

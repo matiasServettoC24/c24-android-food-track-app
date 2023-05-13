@@ -12,7 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.c24_android_food_track_app.databinding.FragmentMenuBinding
 import com.example.c24_android_food_track_app.domain.ViewEntity
+import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
+import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.adapters.MenuAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -37,9 +39,9 @@ class MenuFragment : Fragment() {
         _binding = FragmentMenuBinding.inflate(inflater, container, false)
 
         _adapter = MenuAdapter(
-            orderCallback = ::orderCallback,
+            selectMenuCallback = ::selectMenuCallback,
             selectTimeSlotCallback = ::selectTimeCallback,
-            asapBtnCallback = ::selectTimeCallback,
+            asapBtnCallback = ::selectAsap,
         )
 
         binding.recyclerView.adapter = adapter
@@ -103,17 +105,21 @@ class MenuFragment : Fragment() {
         showViewEntities(uiState.dishList)
     }
 
-    private fun orderCallback() {
+    private fun selectMenuCallback(selectedMenu: MenuViewEntity) {
         viewLifecycleOwner.lifecycleScope.launch {
-            menuViewModel.loadTimeSlots()
+            menuViewModel.loadTimeSlots(selectedMenu)
         }
     }
 
-    private fun selectTimeCallback() {
+    private fun selectTimeCallback(selectedSlot: TimeSlotViewEntity) {
         viewLifecycleOwner.lifecycleScope.launch {
-            val foodOrder = "Pizza Muzzarella"
-            val slotId = "1"
-            menuViewModel.sendOrder(foodOrder, slotId)
+            menuViewModel.sendOrder(selectedSlot)
+        }
+    }
+
+    private fun selectAsap() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            menuViewModel.asapOrder()
         }
     }
 
