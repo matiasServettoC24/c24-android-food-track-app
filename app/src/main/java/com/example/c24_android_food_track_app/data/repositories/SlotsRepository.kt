@@ -5,14 +5,23 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import kotlin.math.abs
 
 class SlotsRepository {
+
+    private val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
     private val _slots = MutableStateFlow<List<TimeSlotViewEntity>>(listOf())
     val slots: StateFlow<List<TimeSlotViewEntity>> = _slots
 
     private val db = Firebase.firestore
     private val slotsCollection = db.collection("Slots")
+
+    val asapSlot get() = slots.value.minBy {
+        abs(LocalTime.now().toSecondOfDay() - LocalTime.parse(it.timeStart, formatter).toSecondOfDay())
+    }
 
     init {
         slotsCollection.addSnapshotListener { value, e ->
@@ -45,7 +54,9 @@ class SlotsRepository {
                 }
 
             }
-            _slots.value = slots
+            _slots.value = slots.sortedBy {
+                abs(LocalTime.now().toSecondOfDay() - LocalTime.parse(it.timeStart, formatter).toSecondOfDay())
+            }
         }
     }
 
