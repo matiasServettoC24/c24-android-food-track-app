@@ -21,12 +21,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="12:10" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" pm"
-            app:layout_constraintStart_toEndOf="@id/start_time"
-            app:layout_constraintBottom_toBottomOf="@id/start_time"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/end_time"
@@ -37,13 +31,6 @@
             app:layout_constraintStart_toEndOf="@id/start_time"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="12:20" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" pm"
-            app:layout_constraintStart_toEndOf="@id/end_time"
-            app:layout_constraintBottom_toBottomOf="@id/end_time"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/remaining_slots"
