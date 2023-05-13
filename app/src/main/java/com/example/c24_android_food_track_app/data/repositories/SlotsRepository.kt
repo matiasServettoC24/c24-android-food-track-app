@@ -1,6 +1,6 @@
 package com.example.c24_android_food_track_app.data.repositories
 
-import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
+import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,8 +13,8 @@ class SlotsRepository {
 
     private val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    private val _slots = MutableStateFlow<List<TimeSlotViewEntity>>(listOf())
-    val slots: StateFlow<List<TimeSlotViewEntity>> = _slots
+    private val _slots = MutableStateFlow<List<TimeSlot>>(listOf())
+    val slots: StateFlow<List<TimeSlot>> = _slots
 
     private val db = Firebase.firestore
     private val slotsCollection = db.collection("Slots")
@@ -25,7 +25,7 @@ class SlotsRepository {
 
     init {
         slotsCollection.addSnapshotListener { value, e ->
-            val slots = ArrayList<TimeSlotViewEntity>()
+            val slots = ArrayList<TimeSlot>()
 
             for (doc in value!!) {
                 val slotId = doc.getString("slot_id")
@@ -43,7 +43,7 @@ class SlotsRepository {
                         // add to list the
 
                         slots.add(
-                            TimeSlotViewEntity(
+                            TimeSlot(
                                 slotId = slotId,
                                 timeStart = timeStart,
                                 timeEnd = timeEnd,
@@ -60,7 +60,7 @@ class SlotsRepository {
         }
     }
 
-    fun useSlot(slot: TimeSlotViewEntity) {
+    fun useSlot(slot: TimeSlot) {
         slotsCollection
             .document("slot" + slot.slotId)
             .update(

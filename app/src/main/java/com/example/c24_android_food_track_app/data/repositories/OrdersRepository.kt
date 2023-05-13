@@ -3,7 +3,7 @@ package com.example.c24_android_food_track_app.data.repositories
 import android.util.Log
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
-import com.example.c24_android_food_track_app.domain.menu.TimeSlotViewEntity
+import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -136,7 +136,7 @@ class OrdersRepository {
             )
     }
 
-    fun placeOrder(foodOrder: String, selectedSlot: TimeSlotViewEntity) {
+    fun placeOrder(foodOrder: String, selectedSlot: TimeSlot) {
         firebaseAuth.currentUser?.let { user ->
             collection
                 .document("user" + user.uid)
