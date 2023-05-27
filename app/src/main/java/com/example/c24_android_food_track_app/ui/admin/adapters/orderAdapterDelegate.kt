@@ -1,13 +1,21 @@
 package com.example.c24_android_food_track_app.ui.admin.adapters
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.c24_android_food_track_app.R
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
@@ -44,31 +52,31 @@ private fun ItemViewContent(
     onOrderPickedUpCallback: (OrderViewEntity) -> Unit,
     deleteOrderCallback: (OrderViewEntity) -> Unit,
 ) = MaterialTheme {
-    Row {
-        Column {
-            Text(item.order.email)
-            Text(item.order.title)
-            item.order.slotTime?.let { Text(it) }
-        }
-        when (item.order.status) {
-            Status.Ordered -> {
-                Button(onClick = { onOrderReadyCallback(item) }) {
-                    Text("READY")
-                }
-            }
-            Status.Ready -> {
-                Button(onClick = { onOrderPickedUpCallback(item) }) {
-                    Text("PICKED UP")
-                }
-            }
-            Status.Picked -> {
-                Button(onClick = { deleteOrderCallback(item) }) {
-                    Text("DELETE")
-                }
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Row {
+            OrderDetailsView(Modifier.weight(1f), item)
+            when (item.order.status) {
+                Status.Ordered -> ButtonView(text = "READY") { onOrderReadyCallback(item) }
+                Status.Ready -> ButtonView(text = "PICKED UP") { onOrderPickedUpCallback(item) }
+                Status.Picked -> ButtonView(text = "DELETE") { deleteOrderCallback(item) }
             }
         }
-
     }
+}
+
+@Composable
+private fun OrderDetailsView(modifier: Modifier, item: OrderViewEntity) = Column(modifier) {
+    Text(item.order.email, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    Text(item.order.title)
+    item.order.slotTime?.let { Text(it) }
+}
+
+@Composable
+private fun ButtonView(text: String, onClick: () -> Unit) = Button(onClick) {
+    Text(text)
 }
 
 private const val previewWidthDp = 300
