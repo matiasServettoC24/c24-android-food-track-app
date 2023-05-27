@@ -1,6 +1,5 @@
 package com.example.c24_android_food_track_app.ui.admin.adapters
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +10,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.text.style.TextOverflow
@@ -53,29 +53,45 @@ private fun ItemViewContent(
     deleteOrderCallback: (OrderViewEntity) -> Unit,
 ) = MaterialTheme {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row {
             OrderDetailsView(Modifier.weight(1f), item)
+            val buttonModifier = Modifier.align(Alignment.CenterVertically)
             when (item.order.status) {
-                Status.Ordered -> ButtonView(text = "READY") { onOrderReadyCallback(item) }
-                Status.Ready -> ButtonView(text = "PICKED UP") { onOrderPickedUpCallback(item) }
-                Status.Picked -> ButtonView(text = "DELETE") { deleteOrderCallback(item) }
+                Status.Ordered -> ButtonView(buttonModifier, text = "READY") {
+                    onOrderReadyCallback(item)
+                }
+                Status.Ready -> ButtonView(buttonModifier, text = "PICKED UP") {
+                    onOrderPickedUpCallback(item)
+                }
+                Status.Picked -> ButtonView(buttonModifier, text = "DELETE") {
+                    deleteOrderCallback(item)
+                }
             }
         }
     }
 }
 
 @Composable
-private fun OrderDetailsView(modifier: Modifier, item: OrderViewEntity) = Column(modifier) {
+private fun OrderDetailsView(
+    modifier: Modifier,
+    item: OrderViewEntity
+) = Column(modifier.padding(start = 8.dp, top = 4.dp, bottom = 4.dp)) {
     Text(item.order.email, maxLines = 1, overflow = TextOverflow.Ellipsis)
     Text(item.order.title)
     item.order.slotTime?.let { Text(it) }
 }
 
 @Composable
-private fun ButtonView(text: String, onClick: () -> Unit) = Button(onClick) {
+private fun ButtonView(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit
+) = Button(onClick, modifier.padding(horizontal = 8.dp)) {
     Text(text)
 }
 
