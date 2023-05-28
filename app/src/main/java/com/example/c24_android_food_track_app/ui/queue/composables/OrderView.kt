@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
 import com.example.c24_android_food_track_app.domain.queue.OrderViewEntity
 import com.example.c24_android_food_track_app.util.PREVIEW_WIDTH_DP
+import com.example.c24_android_food_track_app.util.createPreviewFoodTrackOrder
 
 
 @Composable
@@ -99,13 +99,3 @@ private fun StatusReadyPreview() =
 @Composable
 private fun StatusPickedPreview() =
     OrderView(OrderViewEntity(createPreviewFoodTrackOrder(status = Status.Picked)), {}, {}, {})
-
-private fun createPreviewFoodTrackOrder(status: Status) = FoodTrackOrder(
-    id = "id",
-    title = "Pizza Margarita",
-    status = status,
-    email = "matias.servetto@check24.de",
-    slot = "10-12",
-    timeStart = "12:00",
-    slotTime = "10:35-10:45"
-)
