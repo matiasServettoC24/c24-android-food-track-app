@@ -11,7 +11,7 @@ import com.example.c24_android_food_track_app.data.repositories.SlotsRepository
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.AsapBtnViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
-import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
+import com.example.c24_android_food_track_app.domain.menu.DishViewEntity
 import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +28,7 @@ class MenuViewModel : ViewModel() {
     private val ordersRepository = OrdersRepository()
     private val slotsRepository = SlotsRepository()
 
-    private var selectedMenu: MenuViewEntity? = null
+    private var selectedMenu: DishViewEntity? = null
 
     init {
         viewModelScope.launch { ordersRepository.initCurrentOrderDataBase() }
@@ -64,26 +64,25 @@ class MenuViewModel : ViewModel() {
     private fun loadMenu() {
         _uiState.value = MenuUiState.DishSelection(
             listOf(
-                MenuTitleViewEntity("Select your meal:"),
-                MenuViewEntity(
+                DishViewEntity(
                     dishTitle = "Pizza Mozzarella",
                     dishType = DishType.NON_VEGETARIAN.name
                 ),
-                MenuViewEntity(dishTitle = "Pizza Margarita", dishType = DishType.VEGETARIAN.name),
-                MenuViewEntity(
+                DishViewEntity(dishTitle = "Pizza Margarita", dishType = DishType.VEGETARIAN.name),
+                DishViewEntity(
                     dishTitle = "Pizza Pepperoni",
                     dishType = DishType.NON_VEGETARIAN.name
                 ),
-                MenuViewEntity(
+                DishViewEntity(
                     dishTitle = "Pizza Quattro Formaggi",
                     dishType = DishType.VEGETARIAN.name
                 ),
-                MenuViewEntity(dishTitle = "Pizza Veggie", dishType = DishType.VEGETARIAN.name),
+                DishViewEntity(dishTitle = "Pizza Veggie", dishType = DishType.VEGETARIAN.name),
             )
         )
     }
 
-    fun loadTimeSlots(selectedMenu: MenuViewEntity) {
+    fun loadTimeSlots(selectedMenu: DishViewEntity) {
         this.selectedMenu = selectedMenu
         updateTimeSlots(slotsRepository.slots.value)
     }

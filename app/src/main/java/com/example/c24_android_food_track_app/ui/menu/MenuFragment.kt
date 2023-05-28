@@ -15,9 +15,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.domain.ViewEntity
-import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
+import com.example.c24_android_food_track_app.domain.menu.DishViewEntity
 import com.example.c24_android_food_track_app.ui.menu.composables.LoadingMenuView
 import com.example.c24_android_food_track_app.ui.menu.composables.MenuErrorView
+import com.example.c24_android_food_track_app.ui.menu.composables.MenuView
 import com.example.c24_android_food_track_app.ui.menu.composables.OrderPickedUpView
 import com.example.c24_android_food_track_app.ui.menu.composables.OrderReadyView
 import com.example.c24_android_food_track_app.ui.menu.composables.WaitingForOrderView
@@ -54,48 +55,39 @@ class MenuFragment : Fragment() {
         when (uiState) {
             MenuUiState.Loading -> showLoadingViews()
             MenuUiState.Error -> showErrorViews()
-            is MenuUiState.DishSelection -> showDishes(uiState.dishes)
-            is MenuUiState.TimeSelection -> showTimeSlots(uiState.timeSlots)
-            is MenuUiState.WaitingForOrder -> showWaitingForOrder(uiState.currentOrder)
-            is MenuUiState.OrderReady -> showOrderReady(uiState.currentOrder)
-            is MenuUiState.OrderPicked -> showOrderPickedUp(uiState.currentOrder)
+            is MenuUiState.DishSelection -> showMenuViews(uiState.dishes)
+            is MenuUiState.TimeSelection -> showTimeSlotsViews(uiState.timeSlots)
+            is MenuUiState.WaitingForOrder -> showWaitingForOrderViews(uiState.currentOrder)
+            is MenuUiState.OrderReady -> showOrderReadyViews(uiState.currentOrder)
+            is MenuUiState.OrderPicked -> showOrderPickedUpViews(uiState.currentOrder)
         }
     }
 
-    private fun showOrderPickedUp(currentOrder: FoodTrackOrder) = updateContent {
+    private fun showOrderPickedUpViews(currentOrder: FoodTrackOrder) = updateContent {
         OrderPickedUpView(currentOrder)
     }
 
-    private fun showOrderReady(currentOrder: FoodTrackOrder) = updateContent {
+    private fun showOrderReadyViews(currentOrder: FoodTrackOrder) = updateContent {
         OrderReadyView(currentOrder)
     }
 
-    private fun showWaitingForOrder(currentOrder: FoodTrackOrder) = updateContent {
+    private fun showWaitingForOrderViews(currentOrder: FoodTrackOrder) = updateContent {
         WaitingForOrderView(currentOrder)
     }
 
-    private fun showTimeSlots(timeSlots: List<ViewEntity>) {
-        showViewEntities(timeSlots)
+    private fun showTimeSlotsViews(timeSlots: List<ViewEntity>) {
+//        showViewEntities(timeSlots)
     }
 
-    private fun showDishes(dishes: List<ViewEntity>) {
-        showViewEntities(dishes)
-    }
-
-    private fun showViewEntities(viewEntities: List<ViewEntity>) {
-//        binding.loading.root.isVisible = false
-//        binding.error.root.isVisible = false
-//
-//        binding.recyclerView.isVisible = true
-//        adapter.items = viewEntities
-//        adapter.notifyDataSetChanged()
+    private fun showMenuViews(dishes: List<DishViewEntity>) = updateContent {
+        MenuView(dishes, ::selectMenuCallback)
     }
 
     private fun showLoadingViews() = updateContent { LoadingMenuView() }
 
     private fun showErrorViews() = updateContent { MenuErrorView() }
 
-    private fun selectMenuCallback(selectedMenu: MenuViewEntity) {
+    private fun selectMenuCallback(selectedMenu: DishViewEntity) {
         viewLifecycleOwner.lifecycleScope.launch {
             menuViewModel.loadTimeSlots(selectedMenu)
         }
