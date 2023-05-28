@@ -19,6 +19,7 @@ import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.composables.LoadingMenuView
+import com.example.c24_android_food_track_app.util.updateContent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -86,12 +87,7 @@ class MenuFragment : Fragment() {
 //        adapter.notifyDataSetChanged()
     }
 
-    private fun showLoading() {
-//        binding.recyclerView.isVisible = false
-//        binding.error.root.isVisible = false
-//
-//        binding.loading.root.isVisible = true
-    }
+    private fun showLoading() = updateContent { LoadingMenuView() }
 
     private fun showError() {
 //        binding.recyclerView.isVisible = false

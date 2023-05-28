@@ -13,10 +13,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.c24_android_food_track_app.domain.queue.OrderViewEntity
+import com.example.c24_android_food_track_app.ui.queue.composables.LoadingQueueView
 import com.example.c24_android_food_track_app.ui.queue.composables.NonAuthErrorView
 import com.example.c24_android_food_track_app.ui.queue.composables.QueueErrorView
 import com.example.c24_android_food_track_app.ui.queue.composables.QueueView
 import com.example.c24_android_food_track_app.ui.shared.composables.LoadingView
+import com.example.c24_android_food_track_app.util.updateContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -56,38 +59,21 @@ class QueueFragment : Fragment() {
         QueueUiState.ErrorLoadingQueue -> showErrorViews()
         QueueUiState.ErrorNonAuthorized -> showNonAuthErrorViews()
         QueueUiState.LoadingQueue -> showLoadingViews()
-        is QueueUiState.Queue -> showQueueViews(uiState)
+        is QueueUiState.Queue -> showQueueViews(uiState.orders)
     }
 
-    private fun showErrorViews() {
-        updateContent { QueueErrorView() }
-    }
+    private fun showErrorViews() = updateContent { QueueErrorView() }
 
-    private fun showNonAuthErrorViews() {
-        updateContent { NonAuthErrorView() }
-    }
+    private fun showNonAuthErrorViews() = updateContent { NonAuthErrorView() }
 
-    private fun showLoadingViews() {
-        updateContent { LoadingView(loadingMessage = "Loading Queue...") }
-    }
+    private fun showLoadingViews() = updateContent { LoadingQueueView() }
 
-    private fun showQueueViews(uiState: QueueUiState.Queue) {
-        updateContent {
-            QueueView(
-                uiState.orders,
-                viewModel::onOrderReady,
-                viewModel::onOrderPickedUp,
-                viewModel::deleteOrder
-            )
-        }
-    }
-
-    private fun updateContent(content: @Composable () -> Unit) {
-        val composeView = view as? ComposeView ?: return
-        composeView.setContent {
-            MaterialTheme {
-                content()
-            }
-        }
+    private fun showQueueViews(orders: List<OrderViewEntity>) = updateContent {
+        QueueView(
+            orders,
+            viewModel::onOrderReady,
+            viewModel::onOrderPickedUp,
+            viewModel::deleteOrder
+        )
     }
 }
