@@ -3,13 +3,11 @@ package com.example.c24_android_food_track_app.ui.menu.adapters
 import com.example.c24_android_food_track_app.R
 import com.example.c24_android_food_track_app.databinding.AsapTimeslotItemBinding
 import com.example.c24_android_food_track_app.databinding.MenuItemBinding
-import com.example.c24_android_food_track_app.databinding.MenuOrderReadyItemBinding
 import com.example.c24_android_food_track_app.databinding.TimeslotItemBinding
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.AsapBtnViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
-import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.databinding.MenuOrderPickedUpItemBinding
 import com.example.c24_android_food_track_app.databinding.TitleItemBinding
@@ -48,15 +46,6 @@ fun timeSlotDelegate(selectTimeSlotCallback: (TimeSlot) -> Unit) = adapterDelega
     }
 
     binding.selectTimeSlotBtn.setOnClickListener { selectTimeSlotCallback(item) }
-}
-
-fun orderReadyAdapterDelegate() = adapterDelegate<OrderReadyViewEntity, ViewEntity>(R.layout.menu_order_ready_item) {
-
-    val binding = MenuOrderReadyItemBinding.bind(itemView)
-
-    bind {
-        binding.order.text = item.orderTitle
-    }
 }
 
 fun orderPickedUpAdapterDelegate() = adapterDelegate<OrderPickedViewEntity, ViewEntity>(R.layout.menu_order_picked_up_item) {

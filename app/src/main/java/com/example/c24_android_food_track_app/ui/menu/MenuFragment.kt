@@ -29,9 +29,9 @@ import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
-import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.ui.menu.composables.LoadingMenuView
 import com.example.c24_android_food_track_app.ui.menu.composables.MenuErrorView
+import com.example.c24_android_food_track_app.ui.menu.composables.OrderReadyView
 import com.example.c24_android_food_track_app.ui.menu.composables.WaitingForOrderView
 import com.example.c24_android_food_track_app.util.updateContent
 import kotlinx.coroutines.flow.collectLatest
@@ -78,8 +78,8 @@ class MenuFragment : Fragment() {
         showViewEntities(listOf(OrderPickedViewEntity(currentOrder.title)))
     }
 
-    private fun showOrderReady(currentOrder: FoodTrackOrder) {
-        showViewEntities(listOf(OrderReadyViewEntity(currentOrder.title)))
+    private fun showOrderReady(currentOrder: FoodTrackOrder) = updateContent {
+        OrderReadyView(currentOrder)
     }
 
     private fun showWaitingForOrder(currentOrder: FoodTrackOrder) = updateContent {
