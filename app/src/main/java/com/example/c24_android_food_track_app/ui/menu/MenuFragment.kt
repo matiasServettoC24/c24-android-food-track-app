@@ -5,20 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -28,9 +16,9 @@ import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
-import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.ui.menu.composables.LoadingMenuView
 import com.example.c24_android_food_track_app.ui.menu.composables.MenuErrorView
+import com.example.c24_android_food_track_app.ui.menu.composables.OrderPickedUpView
 import com.example.c24_android_food_track_app.ui.menu.composables.OrderReadyView
 import com.example.c24_android_food_track_app.ui.menu.composables.WaitingForOrderView
 import com.example.c24_android_food_track_app.util.updateContent
@@ -74,8 +62,8 @@ class MenuFragment : Fragment() {
         }
     }
 
-    private fun showOrderPickedUp(currentOrder: FoodTrackOrder) {
-        showViewEntities(listOf(OrderPickedViewEntity(currentOrder.title)))
+    private fun showOrderPickedUp(currentOrder: FoodTrackOrder) = updateContent {
+        OrderPickedUpView(currentOrder)
     }
 
     private fun showOrderReady(currentOrder: FoodTrackOrder) = updateContent {

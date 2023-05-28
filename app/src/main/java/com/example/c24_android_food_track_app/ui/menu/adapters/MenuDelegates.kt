@@ -9,9 +9,7 @@ import com.example.c24_android_food_track_app.domain.menu.AsapBtnViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.data.models.TimeSlot
-import com.example.c24_android_food_track_app.databinding.MenuOrderPickedUpItemBinding
 import com.example.c24_android_food_track_app.databinding.TitleItemBinding
-import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 
@@ -46,15 +44,6 @@ fun timeSlotDelegate(selectTimeSlotCallback: (TimeSlot) -> Unit) = adapterDelega
     }
 
     binding.selectTimeSlotBtn.setOnClickListener { selectTimeSlotCallback(item) }
-}
-
-fun orderPickedUpAdapterDelegate() = adapterDelegate<OrderPickedViewEntity, ViewEntity>(R.layout.menu_order_picked_up_item) {
-
-    val binding = MenuOrderPickedUpItemBinding.bind(itemView)
-
-    bind {
-        binding.order.text = item.orderTitle
-    }
 }
 
 fun asapBtnAdapterDelegate(asapBtnCallback: () -> Unit) = adapterDelegate<AsapBtnViewEntity, ViewEntity>(R.layout.asap_timeslot_item) {

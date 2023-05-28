@@ -59,4 +59,4 @@ fun OrderReadyView(order: FoodTrackOrder) = Column(
 @Preview(widthDp = PREVIEW_WIDTH_DP, heightDp = PREVIEW_HEIGHT_DP, showBackground = true)
 @Composable
 fun OrderReadyViewPreview() =
-    OrderReadyView(createPreviewFoodTrackOrder(status = Status.Ordered))
+    OrderReadyView(createPreviewFoodTrackOrder(status = Status.Ready))
