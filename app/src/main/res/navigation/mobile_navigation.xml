@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.c24_android_food_track_app.ui.admin.AdminFragment"
+        android:name="com.example.c24_android_food_track_app.ui.queue.QueueFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

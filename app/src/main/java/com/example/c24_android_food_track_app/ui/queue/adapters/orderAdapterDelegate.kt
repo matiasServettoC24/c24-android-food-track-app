@@ -1,4 +1,4 @@
-package com.example.c24_android_food_track_app.ui.admin.adapters
+package com.example.c24_android_food_track_app.ui.queue.adapters
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

@@ -1,4 +1,4 @@
-package com.example.c24_android_food_track_app.ui.admin.adapters
+package com.example.c24_android_food_track_app.ui.queue.adapters
 
 import com.example.c24_android_food_track_app.R
 import com.example.c24_android_food_track_app.domain.LoadingViewEntity
