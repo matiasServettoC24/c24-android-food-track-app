@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.repositories.OrdersRepository
 import com.example.c24_android_food_track_app.data.models.Status
-import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
+import com.example.c24_android_food_track_app.domain.queue.OrderViewEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -2,7 +2,6 @@ package com.example.c24_android_food_track_app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_menu, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_menu, R.id.navigation_queue
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

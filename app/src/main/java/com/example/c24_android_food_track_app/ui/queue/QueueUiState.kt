@@ -1,7 +1,6 @@
 package com.example.c24_android_food_track_app.ui.queue
 
-import com.example.c24_android_food_track_app.domain.ViewEntity
-import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
+import com.example.c24_android_food_track_app.domain.queue.OrderViewEntity
 
 sealed class QueueUiState {
 

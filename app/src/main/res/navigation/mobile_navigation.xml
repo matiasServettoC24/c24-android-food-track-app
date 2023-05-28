@@ -22,9 +22,10 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_menu" />
 
+    <!--  TODO: lern how to add tools:layout but with compose to have previews here  -->
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_queue"
         android:name="com.example.c24_android_food_track_app.ui.queue.QueueFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_notifications" />
+        android:label="@string/app_name" />
+
 </navigation>

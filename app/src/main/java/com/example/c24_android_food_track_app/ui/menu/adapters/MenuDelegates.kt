@@ -1,6 +1,5 @@
 package com.example.c24_android_food_track_app.ui.menu.adapters
 
-import android.widget.TextView
 import com.example.c24_android_food_track_app.R
 import com.example.c24_android_food_track_app.databinding.AsapTimeslotItemBinding
 import com.example.c24_android_food_track_app.databinding.MenuItemBinding
@@ -13,8 +12,8 @@ import com.example.c24_android_food_track_app.domain.menu.MenuTitleViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.data.models.TimeSlot
-import com.example.c24_android_food_track_app.databinding.AdminTitleItemBinding
 import com.example.c24_android_food_track_app.databinding.MenuOrderPickedUpItemBinding
+import com.example.c24_android_food_track_app.databinding.TitleItemBinding
 import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.models.DishType
@@ -87,8 +86,8 @@ fun asapBtnAdapterDelegate(asapBtnCallback: () -> Unit) = adapterDelegate<AsapBt
 }
 
 fun menuTitleAdapterDelegate() =
-    adapterDelegate<MenuTitleViewEntity, ViewEntity>(R.layout.admin_title_item) {
-        val binding = AdminTitleItemBinding.bind(itemView)
+    adapterDelegate<MenuTitleViewEntity, ViewEntity>(R.layout.title_item) {
+        val binding = TitleItemBinding.bind(itemView)
         bind {
             binding.title.text = item.title
         }

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:gravity="center"
-            android:text="Your picked up:"
+            android:text="You picked up:"
             android:textColor="@color/white"
             android:textSize="26dp"
             android:textStyle="bold"

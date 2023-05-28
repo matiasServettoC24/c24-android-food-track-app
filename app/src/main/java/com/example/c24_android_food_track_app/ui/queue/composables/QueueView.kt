@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.Status
-import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
+import com.example.c24_android_food_track_app.domain.queue.OrderViewEntity
 import com.example.c24_android_food_track_app.util.PREVIEW_WIDTH_DP
 
 @Composable
