@@ -19,6 +19,7 @@ import com.example.c24_android_food_track_app.domain.menu.OrderPickedViewEntity
 import com.example.c24_android_food_track_app.domain.menu.OrderReadyViewEntity
 import com.example.c24_android_food_track_app.domain.menu.WaitingForOrderViewEntity
 import com.example.c24_android_food_track_app.ui.menu.composables.LoadingMenuView
+import com.example.c24_android_food_track_app.ui.menu.composables.MenuErrorView
 import com.example.c24_android_food_track_app.util.updateContent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -51,8 +52,8 @@ class MenuFragment : Fragment() {
     private fun onUiStateUpdated(uiState: MenuUiState) {
         when (uiState) {
             is MenuUiState.DishSelection -> showDishes(uiState)
-            MenuUiState.Error -> showError()
-            MenuUiState.Loading -> showLoading()
+            MenuUiState.Error -> showErrorViews()
+            MenuUiState.Loading -> showLoadingViews()
             is MenuUiState.TimeSelection -> showTimeSlots(uiState)
             is MenuUiState.OrderReady -> showOrderReady(uiState)
             is MenuUiState.WaitingForOrder -> showWaitingForOrder(uiState)
@@ -69,9 +70,13 @@ class MenuFragment : Fragment() {
     }
 
     private fun showWaitingForOrder(uiState: MenuUiState.WaitingForOrder) {
-        showViewEntities(listOf(WaitingForOrderViewEntity(
-            uiState.currentOrder.title, uiState.currentOrder.slotTime
-        )))
+        showViewEntities(
+            listOf(
+                WaitingForOrderViewEntity(
+                    uiState.currentOrder.title, uiState.currentOrder.slotTime
+                )
+            )
+        )
     }
 
     private fun showTimeSlots(uiState: MenuUiState.TimeSelection) {
@@ -87,14 +92,9 @@ class MenuFragment : Fragment() {
 //        adapter.notifyDataSetChanged()
     }
 
-    private fun showLoading() = updateContent { LoadingMenuView() }
+    private fun showLoadingViews() = updateContent { LoadingMenuView() }
 
-    private fun showError() {
-//        binding.recyclerView.isVisible = false
-//        binding.loading.root.isVisible = false
-//
-//        binding.error.root.isVisible = true
-    }
+    private fun showErrorViews() = updateContent { MenuErrorView() }
 
     private fun showDishes(uiState: MenuUiState.DishSelection) {
         showViewEntities(uiState.dishList)
