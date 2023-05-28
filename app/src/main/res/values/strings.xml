@@ -2,7 +2,7 @@
     <string name="app_name">CheckitoQ</string>
     <string name="title_home">Sign in</string>
     <string name="title_menu">Menu</string>
-    <string name="title_admin">Orders</string>
+    <string name="title_admin">Queue</string>
     <string name="login_email_example_hint">max.mustermann@check24.de</string>
     <string name="login_hint">Email address</string>
     <string name="order_btn_text">Order</string>
