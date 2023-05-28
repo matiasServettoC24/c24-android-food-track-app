@@ -13,10 +13,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.c24_android_food_track_app.ui.queue.composables.LoadingQueueView
 import com.example.c24_android_food_track_app.ui.queue.composables.NonAuthErrorView
 import com.example.c24_android_food_track_app.ui.queue.composables.QueueErrorView
 import com.example.c24_android_food_track_app.ui.queue.composables.QueueView
+import com.example.c24_android_food_track_app.ui.shared.composables.LoadingView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -24,9 +24,6 @@ import kotlinx.coroutines.launch
 class QueueFragment : Fragment() {
 
     private var _viewModel: QueueViewModel? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val viewModel get() = _viewModel!!
 
 
@@ -35,7 +32,7 @@ class QueueFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _viewModel = ViewModelProvider(this).get(QueueViewModel::class.java)
+        _viewModel = ViewModelProvider(this)[QueueViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -46,7 +43,7 @@ class QueueFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                LoadingQueueView()
+                LoadingView(loadingMessage = "Loading Queue...")
             }
         }
     }
@@ -71,7 +68,7 @@ class QueueFragment : Fragment() {
     }
 
     private fun showLoadingViews() {
-        updateContent { LoadingQueueView() }
+        updateContent { LoadingView(loadingMessage = "Loading Queue...") }
     }
 
     private fun showQueueViews(uiState: QueueUiState.Queue) {
