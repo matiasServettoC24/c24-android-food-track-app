@@ -4,30 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.c24_android_food_track_app.databinding.FragmentNotificationsBinding
-import com.example.c24_android_food_track_app.domain.LoadingViewEntity
-import com.example.c24_android_food_track_app.domain.admin.ErrorViewEntity
-import com.example.c24_android_food_track_app.domain.admin.NonAuthAdminViewEntity
-import com.example.c24_android_food_track_app.ui.queue.adapters.AdminAdapter
+import com.example.c24_android_food_track_app.ui.queue.composables.LoadingQueueView
+import com.example.c24_android_food_track_app.ui.queue.composables.NonAuthErrorView
+import com.example.c24_android_food_track_app.ui.queue.composables.QueueErrorView
+import com.example.c24_android_food_track_app.ui.queue.composables.QueueView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class QueueFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
-    private var _adapter: AdminAdapter? = null
     private var _viewModel: QueueViewModel? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
-    private val adapter get() = _adapter!!
     private val viewModel get() = _viewModel!!
 
 
@@ -37,11 +36,6 @@ class QueueFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _viewModel = ViewModelProvider(this).get(QueueViewModel::class.java)
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        _adapter = AdminAdapter(viewModel::onOrderReady, viewModel::onOrderPickedUp, viewModel::deleteOrder)
-        binding.recyclerView.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -49,45 +43,54 @@ class QueueFragment : Fragment() {
             }
         }
 
-        return root
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                LoadingQueueView()
+            }
+        }
     }
 
     private fun CoroutineScope.repeatOnLifecycle() {
         launch { viewModel.uiState.collectLatest(::onUiStateChanged) }
     }
 
-    private fun onUiStateChanged(uiState: QueueUiState) {
-        when (uiState) {
-            QueueUiState.ErrorLoadingQueue -> errorViews()
-            QueueUiState.ErrorNonAuthorized -> nonAuthErrorViews()
-            QueueUiState.LoadingQueue -> showLoadingViews()
-            is QueueUiState.Queue -> showQueueViews(uiState)
-        }
+    private fun onUiStateChanged(uiState: QueueUiState) = when (uiState) {
+        QueueUiState.ErrorLoadingQueue -> showErrorViews()
+        QueueUiState.ErrorNonAuthorized -> showNonAuthErrorViews()
+        QueueUiState.LoadingQueue -> showLoadingViews()
+        is QueueUiState.Queue -> showQueueViews(uiState)
     }
 
-    private fun errorViews() {
-        adapter.items = listOf(ErrorViewEntity)
-        adapter.notifyDataSetChanged()
+    private fun showErrorViews() {
+        updateContent { QueueErrorView() }
     }
 
-    private fun nonAuthErrorViews() {
-        adapter.items = listOf(NonAuthAdminViewEntity)
-        adapter.notifyDataSetChanged()
+    private fun showNonAuthErrorViews() {
+        updateContent { NonAuthErrorView() }
     }
 
     private fun showLoadingViews() {
-        adapter.items = listOf(LoadingViewEntity)
-        adapter.notifyDataSetChanged()
+        updateContent { LoadingQueueView() }
     }
 
     private fun showQueueViews(uiState: QueueUiState.Queue) {
-        adapter.items = uiState.orders
-        adapter.notifyDataSetChanged()
+        updateContent {
+            QueueView(
+                uiState.orders,
+                viewModel::onOrderReady,
+                viewModel::onOrderPickedUp,
+                viewModel::deleteOrder
+            )
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        _adapter = null
+    private fun updateContent(content: @Composable () -> Unit) {
+        val composeView = view as? ComposeView ?: return
+        composeView.setContent {
+            MaterialTheme {
+                content()
+            }
+        }
     }
 }
