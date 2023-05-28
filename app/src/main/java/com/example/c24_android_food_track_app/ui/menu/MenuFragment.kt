@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.models.TimeSlot
 import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.domain.menu.MenuViewEntity
@@ -51,36 +52,36 @@ class MenuFragment : Fragment() {
 
     private fun onUiStateUpdated(uiState: MenuUiState) {
         when (uiState) {
-            is MenuUiState.DishSelection -> showDishes(uiState)
-            MenuUiState.Error -> showErrorViews()
             MenuUiState.Loading -> showLoadingViews()
-            is MenuUiState.TimeSelection -> showTimeSlots(uiState)
-            is MenuUiState.OrderReady -> showOrderReady(uiState)
-            is MenuUiState.WaitingForOrder -> showWaitingForOrder(uiState)
-            is MenuUiState.OrderPicked -> showOrderPickedup(uiState)
+            MenuUiState.Error -> showErrorViews()
+            is MenuUiState.DishSelection -> showDishes(uiState.dishes)
+            is MenuUiState.TimeSelection -> showTimeSlots(uiState.timeSlots)
+            is MenuUiState.WaitingForOrder -> showWaitingForOrder(uiState.currentOrder)
+            is MenuUiState.OrderReady -> showOrderReady(uiState.currentOrder)
+            is MenuUiState.OrderPicked -> showOrderPickedUp(uiState.currentOrder)
         }
     }
 
-    private fun showOrderPickedup(uiState: MenuUiState.OrderPicked) {
-        showViewEntities(listOf(OrderPickedViewEntity(uiState.currentOrder.title)))
+    private fun showOrderPickedUp(currentOrder: FoodTrackOrder) {
+        showViewEntities(listOf(OrderPickedViewEntity(currentOrder.title)))
     }
 
-    private fun showOrderReady(uiState: MenuUiState.OrderReady) {
-        showViewEntities(listOf(OrderReadyViewEntity(uiState.currentOrder.title)))
+    private fun showOrderReady(currentOrder: FoodTrackOrder) {
+        showViewEntities(listOf(OrderReadyViewEntity(currentOrder.title)))
     }
 
-    private fun showWaitingForOrder(uiState: MenuUiState.WaitingForOrder) {
+    private fun showWaitingForOrder(currentOrder: FoodTrackOrder) {
         showViewEntities(
-            listOf(
-                WaitingForOrderViewEntity(
-                    uiState.currentOrder.title, uiState.currentOrder.slotTime
-                )
-            )
+            listOf(WaitingForOrderViewEntity(currentOrder.title, currentOrder.slotTime))
         )
     }
 
-    private fun showTimeSlots(uiState: MenuUiState.TimeSelection) {
-        showViewEntities(uiState.timeList)
+    private fun showTimeSlots(timeSlots: List<ViewEntity>) {
+        showViewEntities(timeSlots)
+    }
+
+    private fun showDishes(dishes: List<ViewEntity>) {
+        showViewEntities(dishes)
     }
 
     private fun showViewEntities(viewEntities: List<ViewEntity>) {
@@ -95,11 +96,6 @@ class MenuFragment : Fragment() {
     private fun showLoadingViews() = updateContent { LoadingMenuView() }
 
     private fun showErrorViews() = updateContent { MenuErrorView() }
-
-    private fun showDishes(uiState: MenuUiState.DishSelection) {
-        showViewEntities(uiState.dishList)
-
-    }
 
     private fun selectMenuCallback(selectedMenu: MenuViewEntity) {
         viewLifecycleOwner.lifecycleScope.launch {
