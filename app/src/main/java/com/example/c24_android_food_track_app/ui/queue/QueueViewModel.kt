@@ -4,12 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.c24_android_food_track_app.data.models.FoodTrackOrder
 import com.example.c24_android_food_track_app.data.repositories.OrdersRepository
-import com.example.c24_android_food_track_app.domain.LoadingViewEntity
-import com.example.c24_android_food_track_app.domain.ViewEntity
 import com.example.c24_android_food_track_app.data.models.Status
-import com.example.c24_android_food_track_app.domain.admin.EmptyQueueViewEntity
 import com.example.c24_android_food_track_app.domain.admin.OrderViewEntity
-import com.example.c24_android_food_track_app.domain.admin.OrdersTitleViewEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -44,15 +40,7 @@ class QueueViewModel : ViewModel() {
     }
 
     private suspend fun onOrdersCollected(orders: List<FoodTrackOrder>) {
-        val queue = arrayListOf<ViewEntity>()
-            .apply { add(OrdersTitleViewEntity) }
-            .apply { addAll(orders.map { OrderViewEntity(it) }) }
-            .apply {
-                if (size == 1) {
-                    add(EmptyQueueViewEntity)
-                }
-            }
-        _uiState.emit(QueueUiState.Queue(queue))
+        _uiState.emit(QueueUiState.Queue(orders.map { OrderViewEntity(it) }))
     }
 
     private fun updateOrderState(order: OrderViewEntity, state: Status) {
